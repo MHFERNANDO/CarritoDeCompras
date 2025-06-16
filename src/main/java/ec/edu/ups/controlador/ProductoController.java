@@ -3,6 +3,7 @@ package ec.edu.ups.controlador;
 import ec.edu.ups.dao.ProductoDAO;
 import ec.edu.ups.modelo.Producto;
 import ec.edu.ups.vista.ProductoAnadirView;
+import ec.edu.ups.vista.ProductoDeleteView;
 import ec.edu.ups.vista.ProductoListaView;
 
 import java.awt.event.ActionEvent;
@@ -13,14 +14,16 @@ public class ProductoController {
 
     private final ProductoAnadirView productoAnadirView;
     private final ProductoListaView productoListaView;
+    private final ProductoDeleteView productoDeleteView;
     private final ProductoDAO productoDAO;
 
     public ProductoController(ProductoDAO productoDAO,
                               ProductoAnadirView productoAnadirView,
-                              ProductoListaView productoListaView) {
+                              ProductoListaView productoListaView, ProductoDeleteView productoDeleteView) {
         this.productoDAO = productoDAO;
         this.productoAnadirView = productoAnadirView;
         this.productoListaView = productoListaView;
+        this.productoDeleteView = productoDeleteView;
         configurarEventos();
     }
 
@@ -43,6 +46,12 @@ public class ProductoController {
             @Override
             public void actionPerformed(ActionEvent e) {
                 listarProductos();
+            }
+        });
+        productoDeleteView.getEliminarButton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                eliminarProducto();
             }
         });
     }
@@ -69,4 +78,18 @@ public class ProductoController {
         List<Producto> productos = productoDAO.listarTodos();
         productoListaView.cargarDatos(productos);
     }
+    private void eliminarProducto(){
+        String codigo = productoDeleteView.getTextField1().getText(); // leer el texto
+        int code = Integer.parseInt(codigo); // convertir a entero
+
+        Producto productoDelete = productoDAO.buscarPorCodigo(code); // buscar el producto
+
+        if (productoDelete != null) {
+            productoDAO.eliminar(productoDelete.getCodigo()); // eliminar si lo encuentra
+            System.out.println("Producto eliminado.");
+        } else {
+            System.out.println("Producto no encontrado.");
+        }
+    }
+
 }
