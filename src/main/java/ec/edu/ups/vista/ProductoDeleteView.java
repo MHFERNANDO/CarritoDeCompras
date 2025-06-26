@@ -1,26 +1,73 @@
 package ec.edu.ups.vista;
 
-import javax.swing.*;
+import ec.edu.ups.modelo.Producto;
 
-public class ProductoDeleteView extends JFrame {
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
+
+public class ProductoDeleteView extends JInternalFrame {
     private JPanel panelPrincipal;
     private JTextField textField1;
     private JButton eliminarButton;
+    private JTable table1;
+    private JButton buscarButton;
+    private DefaultTableModel modelo;
 
     public ProductoDeleteView(){
         setContentPane(panelPrincipal);
         setTitle("Datos del Producto");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
         setSize(500, 500);
         //setResizable(false);
-        setLocationRelativeTo(null);
-        setVisible(true);
+        //setLocationRelativeTo(null);
+        setClosable(true);
+        setIconifiable(true);
+        setResizable(true);
+        setVisible(false);
         //pack();
 
+        modelo = new DefaultTableModel();
+        Object[] columnas = {"Codigo", "Nombre", "Precio"};
+        modelo.setColumnIdentifiers(columnas);
+        table1.setModel(modelo);
+
+        eliminarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mostrarMensaje("Producto eliminado correctamente");
+            }
+        });
     }
 
     public JPanel getPanelPrincipal() {
         return panelPrincipal;
+    }
+
+    public JTable getTable1() {
+        return table1;
+    }
+
+    public void setTable1(JTable table1) {
+        this.table1 = table1;
+    }
+
+    public JButton getBuscarButton() {
+        return buscarButton;
+    }
+
+    public void setBuscarButton(JButton buscarButton) {
+        this.buscarButton = buscarButton;
+    }
+
+    public DefaultTableModel getModelo() {
+        return modelo;
+    }
+
+    public void setModelo(DefaultTableModel modelo) {
+        this.modelo = modelo;
     }
 
     public void setPanelPrincipal(JPanel panelPrincipal) {
@@ -45,5 +92,16 @@ public class ProductoDeleteView extends JFrame {
 
     public void mostrarMensaje(String mensaje){
         JOptionPane.showMessageDialog(this,mensaje);
+    }
+
+    public void cargarDatos(Producto producto) {
+        modelo.setNumRows(0);
+
+        Object [] fila = {producto.getNombre(),producto.getNombre(),producto.getPrecio()};
+
+        modelo.addRow(fila);
+
+
+
     }
 }
