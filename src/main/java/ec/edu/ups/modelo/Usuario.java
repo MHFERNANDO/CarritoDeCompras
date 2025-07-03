@@ -4,15 +4,25 @@ public class Usuario {
     private String username;
     private String contrasenia;
     private Rol rol;
+    private String[] respuestas;
 
     public Usuario() {
 
     }
 
-    public Usuario(String nombreDeUsuario, String contrasenia, Rol rol) {
+    public Usuario(String nombreDeUsuario, String contrasenia, Rol rol, String [] respuestas) {
         this.username = nombreDeUsuario;
         this.contrasenia = contrasenia;
         this.rol = rol;
+        this.respuestas = respuestas;
+    }
+
+    public String[] getRespuestas() {
+        return respuestas;
+    }
+
+    public void setRespuestas(String[] respuestas) {
+        this.respuestas = respuestas;
     }
 
     public String getUsername() {

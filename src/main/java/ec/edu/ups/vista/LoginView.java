@@ -8,6 +8,8 @@ public class LoginView extends JFrame {
     private JButton registrarseButton;
     private JButton iniciarSesiónButton;
     private JTextField usuarioText;
+    private JPasswordField passwordField1;
+    private JButton olvideMiContraseñaButton;
     private JTextField contraText;
 
     public LoginView() {
@@ -16,6 +18,22 @@ public class LoginView extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(600, 400);
         setLocationRelativeTo(null);
+    }
+
+    public JPasswordField getPasswordField1() {
+        return passwordField1;
+    }
+
+    public void setPasswordField1(JPasswordField passwordField1) {
+        this.passwordField1 = passwordField1;
+    }
+
+    public JButton getOlvideMiContraseñaButton() {
+        return olvideMiContraseñaButton;
+    }
+
+    public void setOlvideMiContraseñaButton(JButton olvideMiContraseñaButton) {
+        this.olvideMiContraseñaButton = olvideMiContraseñaButton;
     }
 
     public void mostrarMensaje(String mensaje) {
@@ -60,5 +78,11 @@ public class LoginView extends JFrame {
 
     public void setContraText(JTextField contraText) {
         this.contraText = contraText;
+    }
+
+    public void limpiar(){
+        getUsuarioText().setText("");
+        getPasswordField1().setText("");
+
     }
 }

@@ -1,5 +1,7 @@
 package ec.edu.ups.vista;
 
+import ec.edu.ups.util.MensajeInternacionalizacionHandler;
+
 import javax.swing.*;
 
 public class Actualizar extends JInternalFrame {
@@ -13,20 +15,44 @@ public class Actualizar extends JInternalFrame {
     private JButton buscarButton;
     private JTextField textNombreShow;
     private JTextField textPrecioShow;
+    private JLabel actualizarProductoLabel;
+    private JLabel idLabel;
+    private JLabel nombreLabel;
+    private JLabel precioLabel;
+    private JLabel actualizarLabel;
+    private JLabel nombre2Label;
+    private JLabel precio2Label;
 
-    public Actualizar(){
+    private MensajeInternacionalizacionHandler mensajeHandler;
+
+    public Actualizar(MensajeInternacionalizacionHandler mensajeHandler){
+        this.mensajeHandler = mensajeHandler;
+
         setContentPane(panelPrincipal);
-        setTitle("Datos del Producto");
+        setTitle(mensajeHandler.get("productoAc.titulo"));
         setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
         setSize(500, 500);
-        //setResizable(false);
         setClosable(true);
         setIconifiable(true);
         setResizable(true);
-        //setLocationRelativeTo(null);
         setVisible(false);
 
-        //pack();
+        cambiarIdioma();
+    }
+
+    public void cambiarIdioma() {
+        setTitle(mensajeHandler.get("productoAc.titulo"));
+        actualizarProductoLabel.setText(mensajeHandler.get("productoAc.titulo"));
+        idLabel.setText(mensajeHandler.get("productoAc.codigo"));
+        nombreLabel.setText(mensajeHandler.get("productoAc.nombre"));
+        precioLabel.setText(mensajeHandler.get("productoAc.precio"));
+        actualizarLabel.setText(mensajeHandler.get("productoAc.actualizar"));
+        nombre2Label.setText(mensajeHandler.get("productoAc.nombre2"));
+        precio2Label.setText(mensajeHandler.get("productoAc.precio2"));
+
+        modificarButton.setText(mensajeHandler.get("botonAModificar"));
+        cancelarButton.setText(mensajeHandler.get("botonACancelar"));
+        buscarButton.setText(mensajeHandler.get("botonABuscar"));
     }
 
     public void mostrarMensaje(String mensaje) {
@@ -104,5 +130,4 @@ public class Actualizar extends JInternalFrame {
     public void setBuscarButton(JButton buscarButton) {
         this.buscarButton = buscarButton;
     }
-
 }

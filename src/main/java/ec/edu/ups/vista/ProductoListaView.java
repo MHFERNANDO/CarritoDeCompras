@@ -1,6 +1,7 @@
 package ec.edu.ups.vista;
 
 import ec.edu.ups.modelo.Producto;
+import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -13,25 +14,49 @@ public class ProductoListaView extends JInternalFrame {
     private JTable tblProductos;
     private JPanel panelPrincipal;
     private JButton btnListar;
+    private JLabel nombreLabel;
     private DefaultTableModel modelo;
 
-    public ProductoListaView() {
+    private MensajeInternacionalizacionHandler mensajeHandler;
+
+    public ProductoListaView(MensajeInternacionalizacionHandler mensajeHandler) {
+        this.mensajeHandler = mensajeHandler;
 
         setContentPane(panelPrincipal);
-        setTitle("Listado de Productos");
+        setTitle(mensajeHandler.get("productoLi.titulo"));
         setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
         setClosable(true);
         setIconifiable(true);
         setResizable(true);
 
         setSize(500, 500);
-        //setLocationRelativeTo(null);
         setVisible(false);
 
+        nombreLabel.setText(mensajeHandler.get("productoLi.nombre"));
+        btnBuscar.setText(mensajeHandler.get("botonPBuscar"));
+        btnListar.setText(mensajeHandler.get("botonPLista"));
+
         modelo = new DefaultTableModel();
-        Object[] columnas = {"Codigo", "Nombre", "Precio"};
+        Object[] columnas = {
+                mensajeHandler.get("producto.codigo"),
+                mensajeHandler.get("productoLi.nombre"),
+                mensajeHandler.get("producto.precio")
+        };
         modelo.setColumnIdentifiers(columnas);
         tblProductos.setModel(modelo);
+    }
+
+    public void cambiarIdioma() {
+        setTitle(mensajeHandler.get("productoLi.titulo"));
+        nombreLabel.setText(mensajeHandler.get("productoLi.nombre"));
+        btnBuscar.setText(mensajeHandler.get("botonPBuscar"));
+        btnListar.setText(mensajeHandler.get("botonPLista"));
+
+        modelo.setColumnIdentifiers(new Object[] {
+                mensajeHandler.get("producto.codigo"),
+                mensajeHandler.get("productoLi.nombre"),
+                mensajeHandler.get("producto.precio")
+        });
     }
 
     public JTextField getTxtBuscar() {
@@ -83,6 +108,11 @@ public class ProductoListaView extends JInternalFrame {
     }
 
     public void cargarDatos(List<Producto> listaProductos) {
+        if (listaProductos == null || listaProductos.isEmpty()) {
+            JOptionPane.showMessageDialog(this, mensajeHandler.get("productoLi.no_encontrado"));
+            return;
+        }
+
         modelo.setNumRows(0);
 
         for (Producto producto : listaProductos) {
@@ -93,7 +123,9 @@ public class ProductoListaView extends JInternalFrame {
             };
             modelo.addRow(fila);
         }
+    }
 
-
+    public void mostrarMensaje(String mensaje){
+        JOptionPane.showMessageDialog(this, mensaje);
     }
 }

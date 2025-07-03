@@ -1,6 +1,7 @@
 package ec.edu.ups.vista;
 
 import ec.edu.ups.modelo.Producto;
+import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -15,20 +16,32 @@ public class ProductoAnadirView extends JInternalFrame {
     private JTextField txtCodigo;
     private JButton btnAceptar;
     private JButton btnLimpiar;
+    private JLabel codigoLabel;
+    private JLabel nombreLabel;
+    private JLabel precioLabel;
+    private MensajeInternacionalizacionHandler mensajeHandler;
 
-    public ProductoAnadirView() {
+    public ProductoAnadirView(MensajeInternacionalizacionHandler mensajeHandler) {
+        this.mensajeHandler = mensajeHandler;
+        initComponents();
+    }
 
+    private void initComponents() {
         setContentPane(panelPrincipal);
-        setTitle("Datos del Producto");
+        setTitle(mensajeHandler.get("producto.titulo"));
         setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
         setSize(500, 500);
         setClosable(true);
         setIconifiable(true);
         setResizable(true);
-        //setResizable(false);
-        //setLocationRelativeTo(null);
         setVisible(false);
-        //pack();
+
+        // Configurar textos internacionalizados
+        codigoLabel.setText(mensajeHandler.get("producto.codigo"));
+        nombreLabel.setText(mensajeHandler.get("producto.nombre"));
+        precioLabel.setText(mensajeHandler.get("producto.precio"));
+        btnAceptar.setText(mensajeHandler.get("boton.aceptar"));
+        btnLimpiar.setText(mensajeHandler.get("boton.limpiar"));
 
         btnLimpiar.addActionListener(new ActionListener() {
             @Override
@@ -36,6 +49,15 @@ public class ProductoAnadirView extends JInternalFrame {
                 limpiarCampos();
             }
         });
+    }
+
+    public void cambiarIdioma() {
+        setTitle(mensajeHandler.get("producto.titulo"));
+        codigoLabel.setText(mensajeHandler.get("producto.codigo"));
+        nombreLabel.setText(mensajeHandler.get("producto.nombre"));
+        precioLabel.setText(mensajeHandler.get("producto.precio"));
+        btnAceptar.setText(mensajeHandler.get("boton.aceptar"));
+        btnLimpiar.setText(mensajeHandler.get("boton.limpiar"));
     }
 
     public JPanel getPanelPrincipal() {

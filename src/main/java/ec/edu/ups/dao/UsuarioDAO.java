@@ -10,11 +10,14 @@ public interface UsuarioDAO {
 
     void crear(Usuario usuario);
 
-    Usuario buscarPorUsername(String username);
+    List<Usuario> buscarPorUsername(String username);
+
+    Usuario buscarPorUserEspecifico(String username);
 
     void eliminar(String username);
 
-    void actualizar(Usuario usuario);
+    public void actualizar(String antiguoUsername, Usuario usuarioNuevo);
+
 
     List<Usuario> listarTodos();
 
