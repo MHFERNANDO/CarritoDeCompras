@@ -8,35 +8,36 @@ public class Pregunta {
     private int id;
     private String pregunta;
 
-    List<Pregunta> preguntasList = new ArrayList<>();
-
     public Pregunta(int id, String pregunta) {
         this.id = id;
         this.pregunta = pregunta;
-        crearPreguntas();
-
     }
 
-    public void crearPreguntas(){
+    public int getId() {
+        return id;
+    }
+
+    public String getPregunta() {
+        return pregunta;
+    }
+
+    public static List<Pregunta> crearPreguntas(){
         String[] preguntas = {
-                "¿Cual es tu color favorito?",
-                "¿Cual es el nombre de tu primera mascota?",
-                "¿Cual es tu pelicula favorita?",
-                "¿Cual es tu cancion favorita?",
-                "¿Cual es tu ciudad favorita a visitar?",
-                "¿Cual es tu deporte favorito?",
-                "¿Cual es tu serie favorita?",
-                "¿Cual es tu heroe favorito?",
-                "¿Cual es tu banda/artista favorito?",
-                "¿Cual es tu videojuego favorito?",};
-        for (int i = 0; i <preguntas.length;i++){
-            Pregunta pregunta = new Pregunta(i+1,preguntas[i]);
-            preguntasList.add(pregunta);
+                "¿Cuál es tu color favorito?",
+                "¿Cuál es el nombre de tu primera mascota?",
+                "¿Cuál es tu película favorita?",
+                "¿Cuál es tu canción favorita?",
+                "¿Cuál es tu ciudad favorita a visitar?",
+                "¿Cuál es tu deporte favorito?",
+                "¿Cuál es tu serie favorita?",
+                "¿Cuál es tu héroe favorito?",
+                "¿Cuál es tu banda/artista favorito?",
+                "¿Cuál es tu videojuego favorito?"
+        };
+        List<Pregunta> preguntasList = new ArrayList<>();
+        for (int i = 0; i < preguntas.length; i++) {
+            preguntasList.add(new Pregunta(i + 1, preguntas[i]));
         }
-
-
-
-
-
+        return preguntasList;
     }
 }

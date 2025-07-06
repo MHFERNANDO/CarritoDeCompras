@@ -30,11 +30,12 @@ public class Main {
                 ListarUsuarioView listarUsuarioView = new ListarUsuarioView(mensajeHandler);
                 UsuarioActualizarView usuarioActualizarView = new UsuarioActualizarView(mensajeHandler);
                 RegistrarseView registrarseView = new RegistrarseView();
+                RegistrarPreguntaView registrarPreguntaView = new RegistrarPreguntaView();
 
                 loginView.setVisible(true);
 
                 UsuarioController usuarioController = new UsuarioController(
-                        usuarioDAO, loginView, anadirUsuarioView, listarUsuarioView, usuarioActualizarView,registrarseView
+                        usuarioDAO, loginView, anadirUsuarioView, listarUsuarioView, usuarioActualizarView,registrarseView, registrarPreguntaView
                 );
 
                 loginView.addWindowListener(new WindowAdapter() {

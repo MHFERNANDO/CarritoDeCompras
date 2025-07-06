@@ -38,6 +38,11 @@ public class ListarUsuarioView extends JInternalFrame {
 
         modelo = new DefaultTableModel();
         Object[] columnas = {
+                "Cedula",
+                "Nombre",
+                "Apellido",
+                "Genero",
+                "Fecha de Nacimiento",
                 mensajeHandler.get("usuarioLi.columna.usuario"),
                 mensajeHandler.get("usuarioLi.columna.contrasenia"),
                 mensajeHandler.get("usuarioLi.columna.rol")
@@ -74,6 +79,11 @@ public class ListarUsuarioView extends JInternalFrame {
 
         for (Usuario usuario : usuarios) {
             Object[] fila = {
+                    usuario.getCedula(),
+                    usuario.getNombre(),
+                    usuario.getApellido(),
+                    usuario.getGenero(),
+                    usuario.getFechaNac(),
                     usuario.getUsername(),
                     usuario.getContrasenia(),
                     usuario.getRol()

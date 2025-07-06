@@ -3,6 +3,10 @@ package ec.edu.ups.vista;
 import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 
 import javax.swing.*;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class AnadirUsuarioView extends JInternalFrame {
     private JPanel panelPrincipal;
@@ -16,9 +20,11 @@ public class AnadirUsuarioView extends JInternalFrame {
     private JLabel usuarioLabel;
     private JLabel contraseniaLabel;
     private JLabel CualesTuColorFavoritoLabel;
-    private JTextField textField3;
-    private JTextField textField4;
-    private JTextField textField5;
+    private JTextField cedulaTxtF;
+    private JTextField nombreTxtF;
+    private JTextField apellidoTxtF;
+    private JTextField fechaNacimientoTxtF;
+    private JComboBox comboBox2;
     private JLabel CualEsTuPeliculaFavoritaLabel;
     private JLabel CualEsTuFrutaFavoritaLabel;
 
@@ -42,9 +48,16 @@ public class AnadirUsuarioView extends JInternalFrame {
         comboBox1.removeAllItems();
         comboBox1.addItem(mensajeHandler.get("usuarioA.combo.usuario"));
         comboBox1.addItem(mensajeHandler.get("usuarioA.combo.admin"));
+
+        comboBox2.removeAllItems();
+
+        comboBox2.addItem("Masculino");
+        comboBox2.addItem("Femenino");
+        comboBox2.addItem("Prefiero no decirlo");
     }
 
     public void cambiarIdioma() {
+
         setTitle(mensajeHandler.get("usuarioA.titulo"));
         agregarUsuarioLabel.setText(mensajeHandler.get("usuarioA.agregar"));
         rolLabel.setText(mensajeHandler.get("usuarioA.rol"));
@@ -53,6 +66,7 @@ public class AnadirUsuarioView extends JInternalFrame {
         agregarButton.setText(mensajeHandler.get("botonUAgregar"));
         limpiarButton.setText(mensajeHandler.get("botonULimpiar"));
         cargarDatos();
+
     }
 
     public JPanel getPanelPrincipal() {
@@ -148,27 +162,27 @@ public class AnadirUsuarioView extends JInternalFrame {
     }
 
     public JTextField getTextField3() {
-        return textField3;
+        return cedulaTxtF;
     }
 
     public void setTextField3(JTextField textField3) {
-        this.textField3 = textField3;
+        this.cedulaTxtF = textField3;
     }
 
     public JTextField getTextField4() {
-        return textField4;
+        return nombreTxtF;
     }
 
     public void setTextField4(JTextField textField4) {
-        this.textField4 = textField4;
+        this.nombreTxtF = textField4;
     }
 
     public JTextField getTextField5() {
-        return textField5;
+        return apellidoTxtF;
     }
 
     public void setTextField5(JTextField textField5) {
-        this.textField5 = textField5;
+        this.apellidoTxtF = textField5;
     }
 
     public JLabel getCualEsTuPeliculaFavoritaLabel() {
@@ -187,12 +201,65 @@ public class AnadirUsuarioView extends JInternalFrame {
         CualEsTuFrutaFavoritaLabel = cualEsTuFrutaFavoritaLabel;
     }
 
+    public JTextField getCedulaTxtF() {
+        return cedulaTxtF;
+    }
+
+    public void setCedulaTxtF(JTextField cedulaTxtF) {
+        this.cedulaTxtF = cedulaTxtF;
+    }
+
+    public JTextField getNombreTxtF() {
+        return nombreTxtF;
+    }
+
+    public void setNombreTxtF(JTextField nombreTxtF) {
+        this.nombreTxtF = nombreTxtF;
+    }
+
+    public JTextField getApellidoTxtF() {
+        return apellidoTxtF;
+    }
+
+    public void setApellidoTxtF(JTextField apellidoTxtF) {
+        this.apellidoTxtF = apellidoTxtF;
+    }
+
+    public JTextField getFechaNacimientoTxtF() {
+        return fechaNacimientoTxtF;
+    }
+
+    public void setFechaNacimientoTxtF(JTextField fechaNacimientoTxtF) {
+        this.fechaNacimientoTxtF = fechaNacimientoTxtF;
+    }
+
+    public JComboBox getComboBox2() {
+        return comboBox2;
+    }
+
+    public void setComboBox2(JComboBox comboBox2) {
+        this.comboBox2 = comboBox2;
+    }
+
     public MensajeInternacionalizacionHandler getMensajeHandler() {
         return mensajeHandler;
     }
 
     public void setMensajeHandler(MensajeInternacionalizacionHandler mensajeHandler) {
         this.mensajeHandler = mensajeHandler;
+    }
+
+    public GregorianCalendar obtenerFechaNacimiento() {
+        String fechaTexto = this.fechaNacimientoTxtF.getText();
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        ParsePosition pos = new ParsePosition(0);
+        Date fecha = formato.parse(fechaTexto, pos);
+        if (fecha == null) {
+            return null;
+        }
+        GregorianCalendar calendario = new GregorianCalendar();
+        calendario.setTime(fecha);
+        return calendario;
     }
 
     public void limpiar() {

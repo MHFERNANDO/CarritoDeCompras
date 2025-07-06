@@ -14,9 +14,10 @@ public class UsuarioDAOMemoria implements UsuarioDAO {
 
     public UsuarioDAOMemoria() {
         usuarios = new ArrayList<Usuario>();
-        crear(new Usuario("Fer", "12345", Rol.ADMINISTRADOR, null));
-        crear(new Usuario("user", "12345", Rol.USUARIO, null));
+        crear(new Usuario("Fer", "12345", Rol.ADMINISTRADOR, null, "Fernando", "Martinez", "0150064442", "Masculino", null));
+        crear(new Usuario("user","12345", Rol.USUARIO, null, "Usuario", "Ejemplo", "1234567890", "Femenino", null));
     }
+
 
     @Override
     public Usuario autenticar(String username, String contrasenia) {
