@@ -25,8 +25,12 @@ public class UsuarioController {
     private final UsuarioActualizarView usuarioActualizarView;
     private final RegistrarseView registrarseView;
     private final RegistrarPreguntaView registrarPreguntaView;
+    private final OlvideContrasenaView olvideContrasenaView;
+    private Usuario usuarioRecuperar;
+    private Respuesta preguntaActual;
+    private Respuesta respuestaAleatoria;
 
-    public UsuarioController(UsuarioDAO usuarioDAO, LoginView loginView, AnadirUsuarioView anadirUsuarioView, ListarUsuarioView listarUsuarioView, UsuarioActualizarView usuarioActualizarView, RegistrarseView registrarseView, RegistrarPreguntaView registrarPreguntaView) {
+    public UsuarioController(UsuarioDAO usuarioDAO, LoginView loginView, AnadirUsuarioView anadirUsuarioView, ListarUsuarioView listarUsuarioView, UsuarioActualizarView usuarioActualizarView, RegistrarseView registrarseView, RegistrarPreguntaView registrarPreguntaView, OlvideContrasenaView olvideContrasenaView) {
         this.usuarioDAO = usuarioDAO;
         this.loginView = loginView;
         this.anadirUsuarioView = anadirUsuarioView;
@@ -34,6 +38,7 @@ public class UsuarioController {
         this.usuarioActualizarView = usuarioActualizarView;
         this.registrarseView = registrarseView;
         this.registrarPreguntaView = registrarPreguntaView;
+        this.olvideContrasenaView = olvideContrasenaView;
         this.usuario = null;
         configurarEventosEnVistas();
     }
@@ -113,9 +118,106 @@ public class UsuarioController {
                 guardarRespuestas();
             }
         });
+        loginView.getOlvideMiContraseñaButton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                loginView.setVisible(false);
+                olvideContrasenaView.setVisible(true);
+            }
+        });
+
+        olvideContrasenaView.getBuscarButton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                buscarUsuarioParaRecuperarContrasena();
+            }
+        });
+        olvideContrasenaView.getGuardarContraseñaButton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                guardarNuevaContrasena();
+            }
+        });
 
 
     }
+
+
+
+    private void buscarUsuarioParaRecuperarContrasena() {
+        String username = olvideContrasenaView.getTextField1().getText();
+        if (username.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Ingrese el nombre de usuario.");
+            return;
+        }
+
+        usuarioRecuperar = usuarioDAO.buscarPorUserEspecifico(username);
+        if (usuarioRecuperar == null || usuarioRecuperar.getRespuestas() == null) {
+            JOptionPane.showMessageDialog(null, "Usuario no encontrado o sin preguntas registradas.");
+            return;
+        }
+
+        List<Respuesta> respuestasValidas = new ArrayList<>();
+        for (Respuesta r : usuarioRecuperar.getRespuestas()) {
+            if (!r.getRespuesta().isEmpty()) {
+                respuestasValidas.add(r);
+            }
+        }
+
+        if (respuestasValidas.size() < 1) {
+            JOptionPane.showMessageDialog(null, "No hay preguntas respondidas para recuperar contraseña.");
+            return;
+        }
+
+        preguntaActual = respuestasValidas.get((int)(Math.random() * respuestasValidas.size()));
+        String textoPregunta = Pregunta.crearPreguntas().get(preguntaActual.getId() - 1).getPregunta();
+        olvideContrasenaView.getPreguntaAleatoriaLabel().setText(textoPregunta);
+    }
+
+
+    private void guardarNuevaContrasena() {
+        if (usuarioRecuperar == null || preguntaActual == null) {
+            JOptionPane.showMessageDialog(null, "Primero debe buscar un usuario.");
+            return;
+        }
+
+        String respuestaIngresada = olvideContrasenaView.getTextField2().getText();
+        String nuevaContrasena = olvideContrasenaView.getTextField3().getText();
+
+        if (respuestaIngresada.isEmpty() || nuevaContrasena.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Llene todos los campos.");
+            return;
+        }
+
+        if (preguntaActual.getRespuesta().equalsIgnoreCase(respuestaIngresada.trim())) {
+            usuarioRecuperar.setContrasenia(nuevaContrasena);
+            usuarioDAO.actualizar(usuarioRecuperar.getUsername(), usuarioRecuperar);
+            JOptionPane.showMessageDialog(null, "Contraseña actualizada correctamente: " + nuevaContrasena);
+            olvideContrasenaView.setVisible(false);
+            loginView.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(null, "Respuesta incorrecta. Mostrando otra pregunta.");
+
+            // Buscar otra pregunta diferente a la actual
+            List<Respuesta> respuestasValidas = new ArrayList<>();
+            for (Respuesta r : usuarioRecuperar.getRespuestas()) {
+                if (!r.getRespuesta().isEmpty() && r.getId() != preguntaActual.getId()) {
+                    respuestasValidas.add(r);
+                }
+            }
+
+            if (respuestasValidas.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "No hay más preguntas disponibles.");
+            } else {
+                preguntaActual = respuestasValidas.get((int)(Math.random() * respuestasValidas.size()));
+                String textoPregunta = Pregunta.crearPreguntas().get(preguntaActual.getId() - 1).getPregunta();
+                olvideContrasenaView.getPreguntaAleatoriaLabel().setText(textoPregunta);
+            }
+        }
+    }
+
+
+
     private void buscarUsuario(){
         String username= listarUsuarioView.getTextNombre().getText();
 

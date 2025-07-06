@@ -31,12 +31,11 @@ public class Main {
                 UsuarioActualizarView usuarioActualizarView = new UsuarioActualizarView(mensajeHandler);
                 RegistrarseView registrarseView = new RegistrarseView();
                 RegistrarPreguntaView registrarPreguntaView = new RegistrarPreguntaView();
-
+                OlvideContrasenaView olvideContrasenaView = new OlvideContrasenaView();
                 loginView.setVisible(true);
 
                 UsuarioController usuarioController = new UsuarioController(
-                        usuarioDAO, loginView, anadirUsuarioView, listarUsuarioView, usuarioActualizarView,registrarseView, registrarPreguntaView
-                );
+                        usuarioDAO, loginView, anadirUsuarioView, listarUsuarioView, usuarioActualizarView,registrarseView, registrarPreguntaView, olvideContrasenaView);
 
                 loginView.addWindowListener(new WindowAdapter() {
                     @Override
