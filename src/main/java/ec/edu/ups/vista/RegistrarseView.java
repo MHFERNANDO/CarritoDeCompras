@@ -10,6 +10,14 @@ public class RegistrarseView extends JFrame{
     private JTextField q3textField;
     private JButton registrarButton;
     private JTextField userTexfld;
+    private JTextField textField1;
+    private JTextField textField2;
+    private JLabel ApellidoLabel;
+    private JLabel NombreLabel;
+    private JTextField textField4;
+    private JPasswordField passwordTxt1;
+    private JComboBox comboBox1;
+    private JTextField textField3;
 
     public RegistrarseView(){
         setContentPane(panelPrincipal);
