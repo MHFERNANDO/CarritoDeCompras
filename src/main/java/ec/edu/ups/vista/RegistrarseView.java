@@ -12,12 +12,16 @@ public class RegistrarseView extends JFrame{
     private JTextField userTexfld;
     private JTextField textField1;
     private JTextField textField2;
-    private JLabel ApellidoLabel;
-    private JLabel NombreLabel;
+    private JLabel apellidoLabel;
+    private JLabel nombreLabel;
     private JTextField textField4;
-    private JPasswordField passwordTxt1;
     private JComboBox comboBox1;
     private JTextField textField3;
+    private JLabel cedulaLabel;
+    private JLabel generoLabel;
+    private JLabel fechaDeNacimientoLabel;
+    private JLabel usuarioLabel;
+    private JLabel contraseniaLabel;
 
     public RegistrarseView(){
         setContentPane(panelPrincipal);

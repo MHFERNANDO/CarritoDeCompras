@@ -12,6 +12,7 @@
       <component id="4cd9b" class="javax.swing.JLabel" binding="AgegarCarritoLabel">
         <constraints border-constraint="North"/>
         <properties>
+          <font name="Lucida Sans Typewriter" size="16" style="1"/>
           <foreground color="-16777216"/>
           <horizontalAlignment value="0"/>
           <horizontalTextPosition value="0"/>
