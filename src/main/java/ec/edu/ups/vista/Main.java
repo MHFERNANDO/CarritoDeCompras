@@ -179,6 +179,7 @@ public class Main {
                                 actualizar.cambiarIdioma();
                             });
                             //menu
+                            //
                             menu.getMenuItemItaliano().addActionListener(ev -> {
                                 mensajeHandler.setLenguaje("it", "IT");
                                 menu.cambiarIdioma();
