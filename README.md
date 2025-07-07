@@ -5,7 +5,7 @@ Este proyecto es una aplicación de escritorio para la gestión de carritos de c
 ---
 # Autor
 Fernando Martinez <p>
-Grupo 1
+Grupo 1<p>
 https://youtu.be/RbrBWvnP2HU?si=-LWEPYOHdKYih-gJ
 
 ## 🎯 Funcionalidades Principales
