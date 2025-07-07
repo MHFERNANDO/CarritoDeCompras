@@ -4,6 +4,7 @@ import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.net.URL;
 
 public class CarritoAnadirView extends JInternalFrame {
     private JPanel panelPrincipal;
@@ -44,6 +45,35 @@ public class CarritoAnadirView extends JInternalFrame {
         setResizable(true);
         setVisible(false);
         cargarDatos();
+
+        URL buscarURL = LoginView.class.getClassLoader().getResource("imagenes/buscar.png");
+        if (buscarURL != null) {
+            ImageIcon iconoBtnIniciarSesion = new ImageIcon(buscarURL);
+            buscarButton.setIcon(iconoBtnIniciarSesion);
+        } else {
+            System.err.println("Error: No se ha cargado el icono de Login");
+        }
+        URL contraURL = LoginView.class.getClassLoader().getResource("imagenes/add1.png");
+        if (contraURL != null) {
+            ImageIcon iconoBtnIniciarSesion = new ImageIcon(contraURL);
+            agregarButton.setIcon(iconoBtnIniciarSesion);
+        } else {
+            System.err.println("Error: No se ha cargado el icono de Login");
+        }
+        URL saveURL = LoginView.class.getClassLoader().getResource("imagenes/guardar.png");
+        if (saveURL != null) {
+            ImageIcon iconoBtnIniciarSesion = new ImageIcon(saveURL);
+            guardarButton.setIcon(iconoBtnIniciarSesion);
+        } else {
+            System.err.println("Error: No se ha cargado el icono de Login");
+        }
+        URL limpiarURL = LoginView.class.getClassLoader().getResource("imagenes/x.png");
+        if (limpiarURL != null) {
+            ImageIcon iconoBtnIniciarSesion = new ImageIcon(limpiarURL);
+            cancelarButton.setIcon(iconoBtnIniciarSesion);
+        } else {
+            System.err.println("Error: No se ha cargado el icono de Login");
+        }
 
         modelo = new DefaultTableModel();
         Object[] columnas = {

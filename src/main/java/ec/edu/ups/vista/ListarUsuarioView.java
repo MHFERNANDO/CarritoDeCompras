@@ -5,6 +5,7 @@ import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.net.URL;
 import java.util.List;
 
 public class ListarUsuarioView extends JInternalFrame {
@@ -31,10 +32,27 @@ public class ListarUsuarioView extends JInternalFrame {
         setResizable(true);
         setVisible(false);
 
+
+
         nombreLabel.setText(mensajeHandler.get("usuarioLi.nombre"));
         listaDeUsuariosLabel.setText(mensajeHandler.get("usuarioLi.listado"));
         buscarButton.setText(mensajeHandler.get("botonUBuscar"));
         listarButton.setText(mensajeHandler.get("botonULista"));
+
+        URL buscarURL = LoginView.class.getClassLoader().getResource("imagenes/buscar.png");
+        if (buscarURL != null) {
+            ImageIcon iconoBtnIniciarSesion = new ImageIcon(buscarURL);
+            buscarButton.setIcon(iconoBtnIniciarSesion);
+        } else {
+            System.err.println("Error: No se ha cargado el icono de Login");
+        }
+        URL listaURL = LoginView.class.getClassLoader().getResource("imagenes/buscar.png");
+        if (listaURL != null) {
+            ImageIcon iconoBtnIniciarSesion = new ImageIcon(listaURL);
+            listarButton.setIcon(iconoBtnIniciarSesion);
+        } else {
+            System.err.println("Error: No se ha cargado el icono de Login");
+        }
 
         modelo = new DefaultTableModel();
         Object[] columnas = {

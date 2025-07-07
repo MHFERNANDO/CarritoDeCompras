@@ -29,9 +29,30 @@ public class LoginView extends JFrame {
         setSize(600, 400);
         setLocationRelativeTo(null);
 
-        URL iconURL = getClass().getResource("icons8-usuario-30.png");
-        ImageIcon icon = new ImageIcon(iconURL);
-        iniciarSesiónButton.setIcon(icon);
+        URL loginURL = LoginView.class.getClassLoader().getResource("imagenes/usuario.png");
+        if (loginURL != null) {
+            ImageIcon iconoBtnIniciarSesion = new ImageIcon(loginURL);
+            iniciarSesiónButton.setIcon(iconoBtnIniciarSesion);
+        } else {
+            System.err.println("Error: No se ha cargado el icono de Login");
+        }
+
+        URL contraURL = LoginView.class.getClassLoader().getResource("imagenes/x.png");
+        if (contraURL != null) {
+            ImageIcon iconoBtnIniciarSesion = new ImageIcon(contraURL);
+            olvideMiContraseñaButton.setIcon(iconoBtnIniciarSesion);
+        } else {
+            System.err.println("Error: No se ha cargado el icono de Login");
+        }
+
+        URL addURL = LoginView.class.getClassLoader().getResource("imagenes/agregar.png");
+        if (addURL != null) {
+            ImageIcon iconoBtnIniciarSesion = new ImageIcon(addURL);
+            registrarseButton.setIcon(iconoBtnIniciarSesion);
+        } else {
+            System.err.println("Error: No se ha cargado el icono de Login");
+        }
+
 
         setJMenuBar(new MenuLogin(mensajeHandler, this));
         actualizarTextos();

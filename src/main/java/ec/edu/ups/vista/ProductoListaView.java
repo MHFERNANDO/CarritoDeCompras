@@ -5,6 +5,7 @@ import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.net.URL;
 import java.util.List;
 
 public class ProductoListaView extends JInternalFrame {
@@ -28,6 +29,23 @@ public class ProductoListaView extends JInternalFrame {
         setClosable(true);
         setIconifiable(true);
         setResizable(true);
+
+        URL buscarURL = LoginView.class.getClassLoader().getResource("imagenes/buscar.png");
+        if (buscarURL != null) {
+            ImageIcon iconoBtnIniciarSesion = new ImageIcon(buscarURL);
+            btnBuscar.setIcon(iconoBtnIniciarSesion);
+        } else {
+            System.err.println("Error: No se ha cargado el icono de Login");
+        }
+
+        URL listaURL = LoginView.class.getClassLoader().getResource("imagenes/buscar.png");
+        if (listaURL != null) {
+            ImageIcon iconoBtnIniciarSesion = new ImageIcon(listaURL);
+            btnListar.setIcon(iconoBtnIniciarSesion);
+        } else {
+            System.err.println("Error: No se ha cargado el icono de Login");
+        }
+
 
         setSize(500, 500);
         setVisible(false);

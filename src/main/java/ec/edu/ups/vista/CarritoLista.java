@@ -5,6 +5,7 @@ import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.net.URL;
 import java.util.List;
 
 public class CarritoLista extends JInternalFrame {
@@ -29,6 +30,22 @@ public class CarritoLista extends JInternalFrame {
         setIconifiable(true);
         setResizable(true);
         setVisible(false);
+
+        URL buscarURL = LoginView.class.getClassLoader().getResource("imagenes/buscar.png");
+        if (buscarURL != null) {
+            ImageIcon iconoBtnIniciarSesion = new ImageIcon(buscarURL);
+            botonCBuscar.setIcon(iconoBtnIniciarSesion);
+        } else {
+            System.err.println("Error: No se ha cargado el icono de Login");
+        }
+        URL listaURL = LoginView.class.getClassLoader().getResource("imagenes/buscar.png");
+        if (listaURL != null) {
+            ImageIcon iconoBtnIniciarSesion = new ImageIcon(listaURL);
+            botonCListar.setIcon(iconoBtnIniciarSesion);
+        } else {
+            System.err.println("Error: No se ha cargado el icono de Login");
+        }
+
 
         modelo = new DefaultTableModel();
         Object[] columnas = {

@@ -3,6 +3,7 @@ package ec.edu.ups.vista;
 import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 
 import javax.swing.*;
+import java.net.URL;
 
 public class RegistrarPreguntaView extends JFrame {
 
@@ -46,6 +47,15 @@ public class RegistrarPreguntaView extends JFrame {
         setJMenuBar(new MenuLogin(mensajeHandler, this)); // Adaptar el constructor según tu MenuLogin
 
         actualizarTextos();
+
+        URL listaURL = LoginView.class.getClassLoader().getResource("imagenes/add1.png");
+        if (listaURL != null) {
+            ImageIcon iconoBtnIniciarSesion = new ImageIcon(listaURL);
+            registrarButton.setIcon(iconoBtnIniciarSesion);
+        } else {
+            System.err.println("Error: No se ha cargado el icono de Login");
+        }
+
     }
 
     public void actualizarTextos() {

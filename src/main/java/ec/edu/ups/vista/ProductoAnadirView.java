@@ -6,6 +6,7 @@ import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 import java.util.List;
 
 public class ProductoAnadirView extends JInternalFrame {
@@ -47,6 +48,21 @@ public class ProductoAnadirView extends JInternalFrame {
                 limpiarCampos();
             }
         });
+
+        URL limpiarURL = LoginView.class.getClassLoader().getResource("imagenes/x.png");
+        if (limpiarURL != null) {
+            ImageIcon iconoBtnIniciarSesion = new ImageIcon(limpiarURL);
+            btnLimpiar.setIcon(iconoBtnIniciarSesion);
+        } else {
+            System.err.println("Error: No se ha cargado el icono de Login");
+        }
+        URL contraURL = LoginView.class.getClassLoader().getResource("imagenes/add1.png");
+        if (contraURL != null) {
+            ImageIcon iconoBtnIniciarSesion = new ImageIcon(contraURL);
+            btnAceptar.setIcon(iconoBtnIniciarSesion);
+        } else {
+            System.err.println("Error: No se ha cargado el icono de Login");
+        }
     }
 
     public void cambiarIdioma() {

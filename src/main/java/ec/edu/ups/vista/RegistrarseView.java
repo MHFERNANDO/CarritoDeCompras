@@ -3,6 +3,7 @@ package ec.edu.ups.vista;
 import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 
 import javax.swing.*;
+import java.net.URL;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -42,6 +43,14 @@ public class RegistrarseView extends JFrame {
         setSize(600, 400);
         setLocationRelativeTo(null);
         setVisible(false);
+
+        URL listaURL = LoginView.class.getClassLoader().getResource("imagenes/add1.png");
+        if (listaURL != null) {
+            ImageIcon iconoBtnIniciarSesion = new ImageIcon(listaURL);
+            registrarButton.setIcon(iconoBtnIniciarSesion);
+        } else {
+            System.err.println("Error: No se ha cargado el icono de Login");
+        }
 
         cargarDatos();
 

@@ -5,6 +5,7 @@ import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.net.URL;
 
 public class ProductoDeleteView extends JInternalFrame {
 
@@ -22,6 +23,23 @@ public class ProductoDeleteView extends JInternalFrame {
     public ProductoDeleteView(MensajeInternacionalizacionHandler mensajeHandler) {
         this.mensajeHandler = mensajeHandler;
         initComponents();
+
+        URL buscarURL = LoginView.class.getClassLoader().getResource("imagenes/buscar.png");
+        if (buscarURL != null) {
+            ImageIcon iconoBtnIniciarSesion = new ImageIcon(buscarURL);
+            buscarButton.setIcon(iconoBtnIniciarSesion);
+        } else {
+            System.err.println("Error: No se ha cargado el icono de Login");
+        }
+
+        URL limpiarURL = LoginView.class.getClassLoader().getResource("imagenes/x.png");
+        if (limpiarURL != null) {
+            ImageIcon iconoBtnIniciarSesion = new ImageIcon(limpiarURL);
+            eliminarButton.setIcon(iconoBtnIniciarSesion);
+        } else {
+            System.err.println("Error: No se ha cargado el icono de Login");
+        }
+
     }
 
     private void initComponents() {

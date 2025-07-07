@@ -3,6 +3,7 @@ package ec.edu.ups.vista;
 import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 
 import javax.swing.*;
+import java.net.URL;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -42,6 +43,21 @@ public class AnadirUsuarioView extends JInternalFrame {
         setVisible(false);
         cargarDatos();
         cambiarIdioma();
+        URL limpiarURL = LoginView.class.getClassLoader().getResource("imagenes/x.png");
+        if (limpiarURL != null) {
+            ImageIcon iconoBtnIniciarSesion = new ImageIcon(limpiarURL);
+            limpiarButton.setIcon(iconoBtnIniciarSesion);
+        } else {
+            System.err.println("Error: No se ha cargado el icono de Login");
+        }
+
+        URL contraURL = LoginView.class.getClassLoader().getResource("imagenes/add1.png");
+        if (contraURL != null) {
+            ImageIcon iconoBtnIniciarSesion = new ImageIcon(contraURL);
+            agregarButton.setIcon(iconoBtnIniciarSesion);
+        } else {
+            System.err.println("Error: No se ha cargado el icono de Login");
+        }
     }
 
     private void cargarDatos() {

@@ -3,6 +3,7 @@ package ec.edu.ups.vista;
 import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 
 import javax.swing.*;
+import java.net.URL;
 
 public class UsuarioActualizarView extends JInternalFrame {
     private JPanel panelPrincipal;
@@ -26,6 +27,29 @@ public class UsuarioActualizarView extends JInternalFrame {
     public UsuarioActualizarView(MensajeInternacionalizacionHandler mensajeHandler) {
         this.mensajeHandler = mensajeHandler;
         initComponents();
+
+        URL buscarURL = LoginView.class.getClassLoader().getResource("imagenes/buscar.png");
+        if (buscarURL != null) {
+            ImageIcon iconoBtnIniciarSesion = new ImageIcon(buscarURL);
+            buscarButton.setIcon(iconoBtnIniciarSesion);
+        } else {
+            System.err.println("Error: No se ha cargado el icono de Login");
+        }
+        URL acURL = LoginView.class.getClassLoader().getResource("imagenes/actualizar.png");
+        if (acURL != null) {
+            ImageIcon iconoBtnIniciarSesion = new ImageIcon(buscarURL);
+            actualizarButton.setIcon(iconoBtnIniciarSesion);
+        } else {
+            System.err.println("Error: No se ha cargado el icono de Login");
+        }
+        URL limpiarURL = LoginView.class.getClassLoader().getResource("imagenes/x.png");
+        if (limpiarURL != null) {
+            ImageIcon iconoBtnIniciarSesion = new ImageIcon(limpiarURL);
+            limpiarButton.setIcon(iconoBtnIniciarSesion);
+        } else {
+            System.err.println("Error: No se ha cargado el icono de Login");
+        }
+
     }
 
     private void initComponents() {

@@ -3,6 +3,7 @@ package ec.edu.ups.vista;
 import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 
 import javax.swing.*;
+import java.net.URL;
 
 public class OlvideContrasenaView extends JFrame {
 
@@ -28,11 +29,28 @@ public class OlvideContrasenaView extends JFrame {
         setSize(600, 400);
         setLocationRelativeTo(null);
 
-        // Añadir menú internacionalización
+
         setJMenuBar(new MenuLogin(mensajeHandler,this));
 
-        // Inicializar textos
+
         actualizarTextos();
+
+        URL buscarURL = LoginView.class.getClassLoader().getResource("imagenes/buscar.png");
+        if (buscarURL != null) {
+            ImageIcon iconoBtnIniciarSesion = new ImageIcon(buscarURL);
+            buscarButton.setIcon(iconoBtnIniciarSesion);
+        } else {
+            System.err.println("Error: No se ha cargado el icono de Login");
+        }
+
+        URL addURL = LoginView.class.getClassLoader().getResource("imagenes/guardar.png");
+        if (addURL != null) {
+            ImageIcon iconoBtnIniciarSesion = new ImageIcon(addURL);
+            guardarContraseñaButton.setIcon(iconoBtnIniciarSesion);
+        } else {
+            System.err.println("Error: No se ha cargado el icono de Login");
+        }
+
     }
 
 
