@@ -16,6 +16,8 @@ import ec.edu.ups.vista.*;
 
 import javax.swing.*;
 
+import ec.edu.ups.util.MensajeInternacionalizacionHandler;
+
 public class UsuarioController {
     private Usuario usuario;
     private final UsuarioDAO usuarioDAO;
@@ -30,7 +32,9 @@ public class UsuarioController {
     private Respuesta preguntaActual;
     private Respuesta respuestaAleatoria;
 
-    public UsuarioController(UsuarioDAO usuarioDAO, LoginView loginView, AnadirUsuarioView anadirUsuarioView, ListarUsuarioView listarUsuarioView, UsuarioActualizarView usuarioActualizarView, RegistrarseView registrarseView, RegistrarPreguntaView registrarPreguntaView, OlvideContrasenaView olvideContrasenaView) {
+    private MensajeInternacionalizacionHandler mensajeHandler;
+
+    public UsuarioController(UsuarioDAO usuarioDAO, LoginView loginView, AnadirUsuarioView anadirUsuarioView, ListarUsuarioView listarUsuarioView, UsuarioActualizarView usuarioActualizarView, RegistrarseView registrarseView, RegistrarPreguntaView registrarPreguntaView, OlvideContrasenaView olvideContrasenaView, MensajeInternacionalizacionHandler mensajeHandler) {
         this.usuarioDAO = usuarioDAO;
         this.loginView = loginView;
         this.anadirUsuarioView = anadirUsuarioView;
@@ -39,6 +43,7 @@ public class UsuarioController {
         this.registrarseView = registrarseView;
         this.registrarPreguntaView = registrarPreguntaView;
         this.olvideContrasenaView = olvideContrasenaView;
+        this.mensajeHandler = mensajeHandler;
         this.usuario = null;
         configurarEventosEnVistas();
     }
@@ -73,7 +78,7 @@ public class UsuarioController {
         anadirUsuarioView.getAgregarButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            addUsuario();
+                addUsuario();
             }
         });
         listarUsuarioView.getListarButton().addActionListener(new ActionListener() {
@@ -109,20 +114,14 @@ public class UsuarioController {
         loginView.getOlvideMiContraseñaButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                loginView.setVisible(false);
+                olvideContrasenaView.setVisible(true);
             }
         });
         registrarPreguntaView.getRegistrarButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 guardarRespuestas();
-            }
-        });
-        loginView.getOlvideMiContraseñaButton().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                loginView.setVisible(false);
-                olvideContrasenaView.setVisible(true);
             }
         });
 
@@ -138,22 +137,18 @@ public class UsuarioController {
                 guardarNuevaContrasena();
             }
         });
-
-
     }
-
-
 
     private void buscarUsuarioParaRecuperarContrasena() {
         String username = olvideContrasenaView.getTextField1().getText();
         if (username.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Ingrese el nombre de usuario.");
+            JOptionPane.showMessageDialog(null, mensajeHandler.get("mensaje.ingreseUsuario"));
             return;
         }
 
         usuarioRecuperar = usuarioDAO.buscarPorUserEspecifico(username);
         if (usuarioRecuperar == null || usuarioRecuperar.getRespuestas() == null) {
-            JOptionPane.showMessageDialog(null, "Usuario no encontrado o sin preguntas registradas.");
+            JOptionPane.showMessageDialog(null, mensajeHandler.get("mensaje.usuarioNoEncontrado"));
             return;
         }
 
@@ -165,7 +160,7 @@ public class UsuarioController {
         }
 
         if (respuestasValidas.size() < 1) {
-            JOptionPane.showMessageDialog(null, "No hay preguntas respondidas para recuperar contraseña.");
+            JOptionPane.showMessageDialog(null, mensajeHandler.get("mensaje.noPreguntas"));
             return;
         }
 
@@ -177,7 +172,7 @@ public class UsuarioController {
 
     private void guardarNuevaContrasena() {
         if (usuarioRecuperar == null || preguntaActual == null) {
-            JOptionPane.showMessageDialog(null, "Primero debe buscar un usuario.");
+            JOptionPane.showMessageDialog(null, mensajeHandler.get("mensaje.buscarPrimero"));
             return;
         }
 
@@ -185,18 +180,18 @@ public class UsuarioController {
         String nuevaContrasena = olvideContrasenaView.getTextField3().getText();
 
         if (respuestaIngresada.isEmpty() || nuevaContrasena.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Llene todos los campos.");
+            JOptionPane.showMessageDialog(null, mensajeHandler.get("mensaje.llenarCampos"));
             return;
         }
 
         if (preguntaActual.getRespuesta().equalsIgnoreCase(respuestaIngresada.trim())) {
             usuarioRecuperar.setContrasenia(nuevaContrasena);
             usuarioDAO.actualizar(usuarioRecuperar.getUsername(), usuarioRecuperar);
-            JOptionPane.showMessageDialog(null, "Contraseña actualizada correctamente: " + nuevaContrasena);
+            JOptionPane.showMessageDialog(null, mensajeHandler.get("mensaje.contrasenaActualizada") + ": " + nuevaContrasena);
             olvideContrasenaView.setVisible(false);
             loginView.setVisible(true);
         } else {
-            JOptionPane.showMessageDialog(null, "Respuesta incorrecta. Mostrando otra pregunta.");
+            JOptionPane.showMessageDialog(null, mensajeHandler.get("mensaje.respuestaIncorrecta"));
 
             // Buscar otra pregunta diferente a la actual
             List<Respuesta> respuestasValidas = new ArrayList<>();
@@ -207,7 +202,7 @@ public class UsuarioController {
             }
 
             if (respuestasValidas.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "No hay más preguntas disponibles.");
+                JOptionPane.showMessageDialog(null, mensajeHandler.get("mensaje.noMasPreguntas"));
             } else {
                 preguntaActual = respuestasValidas.get((int)(Math.random() * respuestasValidas.size()));
                 String textoPregunta = Pregunta.crearPreguntas().get(preguntaActual.getId() - 1).getPregunta();
@@ -216,19 +211,16 @@ public class UsuarioController {
         }
     }
 
-
-
     private void buscarUsuario(){
         String username= listarUsuarioView.getTextNombre().getText();
 
         if (listarUsuarioView.getTextNombre().getText().isEmpty()){
-            listarUsuarioView.mostrarMensajes("Llenar todos los campos");
+            listarUsuarioView.mostrarMensajes(mensajeHandler.get("mensaje.llenarCampos"));
             return ;
         }
 
         if(username.isEmpty()){
-            listarUsuarioView.mostrarMensajes("Inserte un usuario a buscar");
-
+            listarUsuarioView.mostrarMensajes(mensajeHandler.get("mensaje.inserteUsuario"));
             return;
         }
 
@@ -240,13 +232,15 @@ public class UsuarioController {
         String username= usuarioActualizarView.getTextField1().getText();
 
         if(username.isEmpty()){
-            usuarioActualizarView.mostrarMensaje("Inserte un usuario a buscar");
+            usuarioActualizarView.mostrarMensaje(mensajeHandler.get("mensaje.inserteUsuario"));
             return;
         }
 
         Usuario usuario = usuarioDAO.buscarPorUserEspecifico(username);
-        usuarioActualizarView.getTextField2().setText(usuario.getUsername());
-        usuarioActualizarView.getTextField3().setText(usuario.getContrasenia());
+        if (usuario != null) {
+            usuarioActualizarView.getTextField2().setText(usuario.getUsername());
+            usuarioActualizarView.getTextField3().setText(usuario.getContrasenia());
+        }
     }
 
 
@@ -260,11 +254,9 @@ public class UsuarioController {
         String genero = anadirUsuarioView.getComboBox2().getSelectedItem().toString();
         GregorianCalendar fechaNacimiento= anadirUsuarioView.obtenerFechaNacimiento();
         if (rol.isEmpty()||username.isEmpty()||password.isEmpty()||nombre.isEmpty()||apellido.isEmpty()||cedula.isEmpty()||genero.isEmpty()||fechaNacimiento==null){
-            anadirUsuarioView.mostrarMensaje("Ingrese todos los campos");
+            anadirUsuarioView.mostrarMensaje(mensajeHandler.get("mensaje.llenarCampos"));
             return ;
         }
-
-
 
         if (rol.equalsIgnoreCase("USUARIO")){
             Usuario usuarioNuevo = new Usuario(username,password,Rol.USUARIO,null,nombre,apellido,cedula,genero,fechaNacimiento);
@@ -273,11 +265,11 @@ public class UsuarioController {
             Usuario usuarioNuevo = new Usuario(username,password,Rol.ADMINISTRADOR,null,nombre,apellido,cedula,genero,fechaNacimiento);
             usuarioDAO.crear(usuarioNuevo);
         }
-        anadirUsuarioView.mostrarMensaje("Usuario creado correctamente");
+        anadirUsuarioView.mostrarMensaje(mensajeHandler.get("mensaje.usuarioCreado"));
         anadirUsuarioView.limpiar();
         System.out.println(usuarioDAO.listarTodos());
-
     }
+
     private void limpiarAddUser(){
         anadirUsuarioView.getTextField1().setText("");
         anadirUsuarioView.getTextField2().setText("");
@@ -290,7 +282,7 @@ public class UsuarioController {
         usuario = usuarioDAO.autenticar(username, contrasenia);
 
         if (usuario == null) {
-            loginView.mostrarMensaje("Usuario o contraseña incorrectos.");
+            loginView.mostrarMensaje(mensajeHandler.get("mensaje.autenticacionIncorrecta"));
         } else {
             List<Respuesta> respuestas = usuario.getRespuestas();
             if (respuestas == null || respuestas.size() < 3) {
@@ -311,6 +303,7 @@ public class UsuarioController {
     public Usuario getUsuarioAutenticado(){
         return usuario;
     }
+
     public void registrarUsuario(){
         String cedula = registrarseView.getCedulaLabel().getText();
         String nombre = registrarseView.getNombreLabel().getText();
@@ -320,8 +313,8 @@ public class UsuarioController {
         String username = registrarseView.getUserTexfld().getText();
         String pasword = registrarseView.getPasswordTexfld().getText();
         if (cedula.isEmpty()||nombre.isEmpty()||apellido.isEmpty()||genero.isEmpty()||fechaNacimiento==null||username.isEmpty()||pasword.isEmpty()){
-            registrarseView.mostrarMensaje("Llene todos los campos");
-        }else {
+            registrarseView.mostrarMensaje(mensajeHandler.get("mensaje.llenarCampos"));
+        } else {
             usuario = new Usuario(username,pasword,Rol.USUARIO,null,nombre,apellido,cedula,genero,fechaNacimiento);
             usuarioDAO.crear(usuario);
         }
@@ -332,7 +325,7 @@ public class UsuarioController {
 
     private void guardarRespuestas() {
         if (usuario == null) {
-            registrarPreguntaView.mostrarMensaje("No hay usuario registrado.");
+            registrarPreguntaView.mostrarMensaje(mensajeHandler.get("mensaje.noUsuarioRegistrado"));
             return;
         }
 
@@ -362,19 +355,17 @@ public class UsuarioController {
         }
 
         if (respondidas < 3) {
-            registrarPreguntaView.mostrarMensaje("Debe responder al menos 3 preguntas.");
+            registrarPreguntaView.mostrarMensaje(mensajeHandler.get("mensaje.debeResponderTres"));
             return;
         }
 
         usuario.setRespuestas(respuestas);
         usuarioDAO.actualizar(usuario.getUsername(), usuario); // actualiza con respuestas nuevas
 
-        registrarPreguntaView.mostrarMensaje("Usuario registrado exitosamente.");
+        registrarPreguntaView.mostrarMensaje(mensajeHandler.get("mensaje.usuarioRegistrado"));
         registrarPreguntaView.setVisible(false);
         loginView.setVisible(true);
     }
-
-
 
     private void mostrarPreguntasEnVista() {
         List<Pregunta> preguntas = Pregunta.crearPreguntas();
@@ -399,40 +390,39 @@ public class UsuarioController {
     private void actualizarUser(){
         String username = usuarioActualizarView.getTextField1().getText();
         if(username.isEmpty()){
-            usuarioActualizarView.mostrarMensaje("Llenar campo a buscar");
+            usuarioActualizarView.mostrarMensaje(mensajeHandler.get("mensaje.llenarCampoBuscar"));
             return ;
         }
         Usuario usuarioEn = usuarioDAO.buscarPorUserEspecifico(username);
-        usuarioActualizarView.getTextField2().setText(usuarioEn.getUsername());
-        usuarioActualizarView.getTextField3().setText(usuarioEn.getContrasenia());
+        if (usuarioEn != null) {
+            usuarioActualizarView.getTextField2().setText(usuarioEn.getUsername());
+            usuarioActualizarView.getTextField3().setText(usuarioEn.getContrasenia());
+        }
 
         String nUsername = usuarioActualizarView.getTextField4().getText();
         String nPassword = usuarioActualizarView.getTextField5().getText();
 
         if (nUsername.isEmpty() || nPassword.isEmpty()){
-            usuarioActualizarView.mostrarMensaje("Llene todos los campos");
+            usuarioActualizarView.mostrarMensaje(mensajeHandler.get("mensaje.llenarCampos"));
             return ;
         }
 
-        int conf = JOptionPane.showConfirmDialog(null, "Estas seguro que deseas actualizar", "Actualizar Usuario", JOptionPane.YES_NO_OPTION);
+        int conf = JOptionPane.showConfirmDialog(null, mensajeHandler.get("mensaje.confirmarActualizacion"), mensajeHandler.get("usuarioAct.titulo"), JOptionPane.YES_NO_OPTION);
 
         if (conf == JOptionPane.YES_OPTION){
             Usuario usuarioAc = new Usuario(nUsername, nPassword,usuarioEn.getRol(), usuarioEn.getRespuestas());
             usuarioDAO.actualizar(usuarioEn.getUsername(),usuarioAc);
-            usuarioActualizarView.mostrarMensaje("Usuario actualizado correctamente");
+            usuarioActualizarView.mostrarMensaje(mensajeHandler.get("mensaje.usuarioActualizado"));
             usuarioActualizarView.limpiar();
-        }else {
-            usuarioActualizarView.mostrarMensaje("Actualizacion cancelada correctamente");
+        } else {
+            usuarioActualizarView.mostrarMensaje(mensajeHandler.get("mensaje.actualizacionCancelada"));
             usuarioActualizarView.limpiar();
         }
-
-
-
     }
+
     public void logout() {
-        this.usuario = null;           // olvidar al usuario autenticado
-        loginView.limpiar();           // limpia los campos de texto
-        loginView.setVisible(true);    // muestra de nuevo la ventana de login
+        this.usuario = null;
+        loginView.limpiar();
+        loginView.setVisible(true);
     }
-
 }

@@ -107,6 +107,9 @@ public class CarritoLista extends JInternalFrame {
         };
         modelo.addRow(fila);
     }
+    public void mostrarMensaje(String mensaje){
+        JOptionPane.showMessageDialog(this,mensaje);
+    }
 
     // Getters y setters
     public JPanel getPanelPrincipal() {

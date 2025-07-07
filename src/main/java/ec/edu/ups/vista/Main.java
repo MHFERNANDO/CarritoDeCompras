@@ -13,6 +13,8 @@ import ec.edu.ups.modelo.Rol;
 import ec.edu.ups.modelo.Usuario;
 import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -35,7 +37,7 @@ public class Main {
                 loginView.setVisible(true);
 
                 UsuarioController usuarioController = new UsuarioController(
-                        usuarioDAO, loginView, anadirUsuarioView, listarUsuarioView, usuarioActualizarView,registrarseView, registrarPreguntaView, olvideContrasenaView);
+                        usuarioDAO, loginView, anadirUsuarioView, listarUsuarioView, usuarioActualizarView,registrarseView, registrarPreguntaView, olvideContrasenaView,mensajeHandler);
 
                 loginView.addWindowListener(new WindowAdapter() {
                     @Override
@@ -53,14 +55,14 @@ public class Main {
                             ProductoDeleteView productoDeleteView = new ProductoDeleteView(mensajeHandler);
                             CarritoLista carritoLista = new CarritoLista(mensajeHandler);
                             Actualizar actualizar = new Actualizar(mensajeHandler);
+                            ListarMisCarritos listarMisCarritos = new ListarMisCarritos(mensajeHandler);
 
                             ProductoController productoController = new ProductoController(
-                                    productoDAO, productoAnadirView, productoListaView, productoDeleteView, actualizar, carritoAnadirView
+                                    productoDAO, productoAnadirView, productoListaView, productoDeleteView, actualizar, carritoAnadirView,mensajeHandler
                             );
 
                             CarritoController carritoController = new CarritoController(
-                                    carritoDAO, productoDAO, carritoAnadirView, carritoLista, usuarioAutenticado
-                            );
+                                    carritoDAO, productoDAO, carritoAnadirView, carritoLista,listarMisCarritos, usuarioAutenticado,mensajeHandler);
 
                             menu.mostrarMensaje("Bienvenido: " + usuarioAutenticado.getUsername());
 
@@ -79,6 +81,15 @@ public class Main {
                                 if (!productoListaView.isVisible()) {
                                     productoListaView.setVisible(true);
                                     menu.getMiDesktopPane().add(productoListaView);
+                                }
+                            });
+                            menu.getMenuItemListarMisCarritos().addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                    if (!listarMisCarritos.isVisible()) {
+                                        listarMisCarritos.setVisible(true);
+                                        menu.getMiDesktopPane().add(listarMisCarritos);
+                                    }
                                 }
                             });
 

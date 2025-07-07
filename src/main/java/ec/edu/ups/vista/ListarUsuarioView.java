@@ -56,11 +56,11 @@ public class ListarUsuarioView extends JInternalFrame {
 
         modelo = new DefaultTableModel();
         Object[] columnas = {
-                "Cedula",
-                "Nombre",
-                "Apellido",
-                "Genero",
-                "Fecha de Nacimiento",
+                mensajeHandler.get("usuarioLi.columna.cedula"),
+                mensajeHandler.get("usuarioLi.columna.nombre"),
+                mensajeHandler.get("usuarioLi.columna.apellido"),
+                mensajeHandler.get("usuarioLi.columna.genero"),
+                mensajeHandler.get("usuarioLi.columna.fechaNacimiento"),
                 mensajeHandler.get("usuarioLi.columna.usuario"),
                 mensajeHandler.get("usuarioLi.columna.contrasenia"),
                 mensajeHandler.get("usuarioLi.columna.rol")
