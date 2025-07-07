@@ -35,8 +35,6 @@ public class ProductoAnadirView extends JInternalFrame {
         setIconifiable(true);
         setResizable(true);
         setVisible(false);
-
-        // Configurar textos internacionalizados
         codigoLabel.setText(mensajeHandler.get("producto.codigo"));
         nombreLabel.setText(mensajeHandler.get("producto.nombre"));
         precioLabel.setText(mensajeHandler.get("producto.precio"));

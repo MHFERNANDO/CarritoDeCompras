@@ -1,8 +1,11 @@
 package ec.edu.ups.vista;
 
+import ec.edu.ups.util.MensajeInternacionalizacionHandler;
+
 import javax.swing.*;
 
-public class OlvideContrasenaView extends JFrame{
+public class OlvideContrasenaView extends JFrame {
+
     private JPanel panelPrincipal;
     private JTextField textField1;
     private JButton buscarButton;
@@ -14,91 +17,73 @@ public class OlvideContrasenaView extends JFrame{
     private JLabel recuperarContraLabel;
     private JLabel usuarioLabel;
 
-    public OlvideContrasenaView(){
+    private MensajeInternacionalizacionHandler mensajeHandler;
+
+    public OlvideContrasenaView(MensajeInternacionalizacionHandler mensajeHandler) {
+        this.mensajeHandler = mensajeHandler;
+
         setContentPane(panelPrincipal);
-        setTitle("Iniciar Sesión");
+        setTitle(mensajeHandler.get("olvide.titulo"));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(600, 400);
         setLocationRelativeTo(null);
+
+        // Añadir menú internacionalización
+        setJMenuBar(new MenuLogin(mensajeHandler,this));
+
+        // Inicializar textos
+        actualizarTextos();
     }
 
+
+    public void actualizarTextos() {
+        setTitle(mensajeHandler.get("olvide.titulo"));
+        recuperarContraLabel.setText(mensajeHandler.get("olvide.label.titulo"));
+        usuarioLabel.setText(mensajeHandler.get("olvide.label.usuario"));
+        preguntaAleatoriaLabel.setText(mensajeHandler.get("olvide.label.pregunta"));
+        nuevaContraLabel.setText(mensajeHandler.get("olvide.label.nueva"));
+        buscarButton.setText(mensajeHandler.get("olvide.boton.buscar"));
+        guardarContraseñaButton.setText(mensajeHandler.get("olvide.boton.guardar"));
+    }
+
+    // Getters y setters
     public JPanel getPanelPrincipal() {
         return panelPrincipal;
-    }
-
-    public void setPanelPrincipal(JPanel panelPrincipal) {
-        this.panelPrincipal = panelPrincipal;
     }
 
     public JTextField getTextField1() {
         return textField1;
     }
 
-    public void setTextField1(JTextField textField1) {
-        this.textField1 = textField1;
-    }
-
-    public JButton getBuscarButton() {
-        return buscarButton;
-    }
-
-    public void setBuscarButton(JButton buscarButton) {
-        this.buscarButton = buscarButton;
-    }
-
     public JTextField getTextField2() {
         return textField2;
-    }
-
-    public void setTextField2(JTextField textField2) {
-        this.textField2 = textField2;
     }
 
     public JTextField getTextField3() {
         return textField3;
     }
 
-    public void setTextField3(JTextField textField3) {
-        this.textField3 = textField3;
+    public JButton getBuscarButton() {
+        return buscarButton;
     }
 
     public JButton getGuardarContraseñaButton() {
         return guardarContraseñaButton;
     }
 
-    public void setGuardarContraseñaButton(JButton guardarContraseñaButton) {
-        this.guardarContraseñaButton = guardarContraseñaButton;
-    }
-
     public JLabel getPreguntaAleatoriaLabel() {
         return preguntaAleatoriaLabel;
-    }
-
-    public void setPreguntaAleatoriaLabel(JLabel preguntaAleatoriaLabel) {
-        this.preguntaAleatoriaLabel = preguntaAleatoriaLabel;
     }
 
     public JLabel getNuevaContraLabel() {
         return nuevaContraLabel;
     }
 
-    public void setNuevaContraLabel(JLabel nuevaContraLabel) {
-        this.nuevaContraLabel = nuevaContraLabel;
-    }
-
     public JLabel getRecuperarContraLabel() {
         return recuperarContraLabel;
     }
 
-    public void setRecuperarContraLabel(JLabel recuperarContraLabel) {
-        this.recuperarContraLabel = recuperarContraLabel;
-    }
-
     public JLabel getUsuarioLabel() {
         return usuarioLabel;
-    }
-
-    public void setUsuarioLabel(JLabel usuarioLabel) {
-        this.usuarioLabel = usuarioLabel;
     }
 }

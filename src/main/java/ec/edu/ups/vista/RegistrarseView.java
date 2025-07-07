@@ -1,12 +1,15 @@
 package ec.edu.ups.vista;
 
+import ec.edu.ups.util.MensajeInternacionalizacionHandler;
+
 import javax.swing.*;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-public class RegistrarseView extends JFrame{
+public class RegistrarseView extends JFrame {
+
     private JPanel panelPrincipal;
     private JTextField q1textField;
     private JTextField passwordTexfld;
@@ -19,7 +22,7 @@ public class RegistrarseView extends JFrame{
     private JLabel apellidoLabel;
     private JLabel nombreLabel;
     private JTextField cedulatxtF;
-    private JComboBox comboBox1;
+    private JComboBox<String> comboBox1;
     private JTextField fechaNacimientotxtF;
     private JLabel cedulaLabel;
     private JLabel generoLabel;
@@ -28,22 +31,49 @@ public class RegistrarseView extends JFrame{
     private JLabel contraseniaLabel;
     private JLabel registrarUsuarioLabel;
 
-    public RegistrarseView(){
+    private MensajeInternacionalizacionHandler mensajeHandler;
+
+    public RegistrarseView(MensajeInternacionalizacionHandler mensajeHandler) {
+        this.mensajeHandler = mensajeHandler;
+
         setContentPane(panelPrincipal);
-        setTitle("Iniciar Sesión");
+        setTitle(mensajeHandler.get("registrarse.titulo"));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(600, 400);
         setLocationRelativeTo(null);
         setVisible(false);
+
         cargarDatos();
+
+        // Agregar menú para cambio de idioma
+        setJMenuBar(new MenuLogin(mensajeHandler, this));
+
+        actualizarTextos();
     }
 
-    private void cargarDatos(){
+    private void cargarDatos() {
         comboBox1.removeAllItems();
 
-        comboBox1.addItem("Masculino");
-        comboBox1.addItem("Femenino");
-        comboBox1.addItem("Prefiero no decirlo");
+        comboBox1.addItem(mensajeHandler.get("genero.masculino"));
+        comboBox1.addItem(mensajeHandler.get("genero.femenino"));
+        comboBox1.addItem(mensajeHandler.get("genero.prefiero_no_decirlo"));
+    }
+
+    public void actualizarTextos() {
+        setTitle(mensajeHandler.get("registrarse.titulo"));
+
+        registrarUsuarioLabel.setText(mensajeHandler.get("registrarse.titulo"));
+        nombreLabel.setText(mensajeHandler.get("registrarse.nombre"));
+        apellidoLabel.setText(mensajeHandler.get("registrarse.apellido"));
+        cedulaLabel.setText(mensajeHandler.get("registrarse.cedula"));
+        generoLabel.setText(mensajeHandler.get("registrarse.genero"));
+        fechaDeNacimientoLabel.setText(mensajeHandler.get("registrarse.fechaNacimiento"));
+        usuarioLabel.setText(mensajeHandler.get("registrarse.usuario"));
+        contraseniaLabel.setText(mensajeHandler.get("registrarse.contrasenia"));
+        registrarButton.setText(mensajeHandler.get("registrarse.boton.registrar"));
+
+        // Actualizar items del comboBox para género
+        cargarDatos();
     }
 
     public JPanel getPanelPrincipal() {
@@ -142,11 +172,11 @@ public class RegistrarseView extends JFrame{
         this.cedulatxtF = cedulatxtF;
     }
 
-    public JComboBox getComboBox1() {
+    public JComboBox<String> getComboBox1() {
         return comboBox1;
     }
 
-    public void setComboBox1(JComboBox comboBox1) {
+    public void setComboBox1(JComboBox<String> comboBox1) {
         this.comboBox1 = comboBox1;
     }
 
@@ -206,9 +236,18 @@ public class RegistrarseView extends JFrame{
         this.registrarUsuarioLabel = registrarUsuarioLabel;
     }
 
-    public void mostrarMensaje(String mensaje){
-        JOptionPane.showMessageDialog(null,mensaje);
+    public MensajeInternacionalizacionHandler getMensajeHandler() {
+        return mensajeHandler;
     }
+
+    public void setMensajeHandler(MensajeInternacionalizacionHandler mensajeHandler) {
+        this.mensajeHandler = mensajeHandler;
+    }
+
+    public void mostrarMensaje(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje);
+    }
+
     public GregorianCalendar obtenerFechaNacimiento() {
         String fechaTexto = this.fechaNacimientotxtF.getText();
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");

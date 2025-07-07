@@ -1,8 +1,11 @@
 package ec.edu.ups.vista;
 
+import ec.edu.ups.util.MensajeInternacionalizacionHandler;
+
 import javax.swing.*;
 
-public class RegistrarPreguntaView extends JFrame{
+public class RegistrarPreguntaView extends JFrame {
+
     private JPanel panelPrincipal;
     private JTextField textField1;
     private JLabel pregunta1Label;
@@ -26,13 +29,40 @@ public class RegistrarPreguntaView extends JFrame{
     private JLabel pregunta10Label;
     private JLabel pregunta3Label;
 
-    public RegistrarPreguntaView(){
+    private MensajeInternacionalizacionHandler mensajeHandler;
+
+    public RegistrarPreguntaView(MensajeInternacionalizacionHandler mensajeHandler) {
+        this.mensajeHandler = mensajeHandler;
+
         setContentPane(panelPrincipal);
-        setTitle("Iniciar Sesión");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(600, 400);
+        setSize(600, 700);
         setLocationRelativeTo(null);
         setVisible(false);
+
+        setTitle(mensajeHandler.get("registrarPreguntas.titulo"));
+
+        // Añadir menú para cambiar idioma
+        setJMenuBar(new MenuLogin(mensajeHandler, this)); // Adaptar el constructor según tu MenuLogin
+
+        actualizarTextos();
+    }
+
+    public void actualizarTextos() {
+        setTitle(mensajeHandler.get("registrarPreguntas.titulo"));
+
+        pregunta1Label.setText(mensajeHandler.get("pregunta.1"));
+        pregunta2Label.setText(mensajeHandler.get("pregunta.2"));
+        pregunta3Label.setText(mensajeHandler.get("pregunta.3"));
+        pregunta4Label.setText(mensajeHandler.get("pregunta.4"));
+        pregunta5Label.setText(mensajeHandler.get("pregunta.5"));
+        pregunta6Label.setText(mensajeHandler.get("pregunta.6"));
+        pregunta7Label.setText(mensajeHandler.get("pregunta.7"));
+        pregunta8Label.setText(mensajeHandler.get("pregunta.8"));
+        pregunta9Label.setText(mensajeHandler.get("pregunta.9"));
+        pregunta10Label.setText(mensajeHandler.get("pregunta.10"));
+
+        registrarButton.setText(mensajeHandler.get("registrarPreguntas.boton.registrar"));
     }
 
     public JPanel getPanelPrincipal() {
@@ -210,7 +240,16 @@ public class RegistrarPreguntaView extends JFrame{
     public void setPregunta3Label(JLabel pregunta3Label) {
         this.pregunta3Label = pregunta3Label;
     }
+
+    public MensajeInternacionalizacionHandler getMensajeHandler() {
+        return mensajeHandler;
+    }
+
+    public void setMensajeHandler(MensajeInternacionalizacionHandler mensajeHandler) {
+        this.mensajeHandler = mensajeHandler;
+    }
+
     public void mostrarMensaje(String mensaje){
-        JOptionPane.showMessageDialog(this,mensaje);
+        JOptionPane.showMessageDialog(this, mensaje);
     }
 }

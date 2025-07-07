@@ -25,13 +25,13 @@ public class Main {
                 ProductoDAO productoDAO = new ProductoDAOMemoria();
                 CarritoDAO carritoDAO = new CarritoDAOMemoria();
                 MensajeInternacionalizacionHandler mensajeHandler = new MensajeInternacionalizacionHandler("es", "EC");
-                LoginView loginView = new LoginView();
+                LoginView loginView = new LoginView(mensajeHandler);
                 AnadirUsuarioView anadirUsuarioView = new AnadirUsuarioView(mensajeHandler);
                 ListarUsuarioView listarUsuarioView = new ListarUsuarioView(mensajeHandler);
                 UsuarioActualizarView usuarioActualizarView = new UsuarioActualizarView(mensajeHandler);
-                RegistrarseView registrarseView = new RegistrarseView();
-                RegistrarPreguntaView registrarPreguntaView = new RegistrarPreguntaView();
-                OlvideContrasenaView olvideContrasenaView = new OlvideContrasenaView();
+                RegistrarseView registrarseView = new RegistrarseView(mensajeHandler);
+                RegistrarPreguntaView registrarPreguntaView = new RegistrarPreguntaView(mensajeHandler);
+                OlvideContrasenaView olvideContrasenaView = new OlvideContrasenaView(mensajeHandler);
                 loginView.setVisible(true);
 
                 UsuarioController usuarioController = new UsuarioController(

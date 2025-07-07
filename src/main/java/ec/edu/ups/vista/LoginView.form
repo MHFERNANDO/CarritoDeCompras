@@ -30,7 +30,7 @@
             </properties>
             <border type="none"/>
             <children>
-              <component id="b06aa" class="javax.swing.JLabel">
+              <component id="b06aa" class="javax.swing.JLabel" binding="iniciarSesionLabel">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -57,7 +57,7 @@
             </properties>
             <border type="none"/>
             <children>
-              <component id="e6d36" class="javax.swing.JLabel">
+              <component id="e6d36" class="javax.swing.JLabel" binding="usuarioLabel">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -66,7 +66,7 @@
                   <text value="Usuario"/>
                 </properties>
               </component>
-              <component id="561ff" class="javax.swing.JLabel">
+              <component id="561ff" class="javax.swing.JLabel" binding="contraseniaLabel">
                 <constraints>
                   <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
