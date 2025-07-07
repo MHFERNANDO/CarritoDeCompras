@@ -45,4 +45,3 @@ Implementar un sistema educativo que simula un **carrito de compras**, utilizand
 ## © Créditos
 
 Desarrollado como parte de la práctica académica en **Programación Orientada a Objetos – Periodo 66**.
-
