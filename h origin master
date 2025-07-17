@@ -1,0 +1,73 @@
+[33mcommit 0fc4a0f259b1f01dbb9943ae5a0a2b88a4370ced[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: MHFERNANDO <fermarhug@gmail.com>
+Date:   Sun Jul 6 22:53:01 2025 -0500
+
+    Finalizacion del proyecto
+
+ .../ec/edu/ups/controlador/CarritoController.java  | 189 [32m+++++++++++[m[31m----------[m
+ .../ec/edu/ups/controlador/ProductoController.java | 152 [32m++++++++++[m[31m-------[m
+ .../ec/edu/ups/controlador/UsuarioController.java  | 106 [32m++++++[m[31m------[m
+ .../java/ec/edu/ups/vista/AnadirUsuarioView.java   |  18 [32m+[m[31m-[m
+ src/main/java/ec/edu/ups/vista/CarritoLista.java   |   3 [32m+[m
+ .../java/ec/edu/ups/vista/ListarMisCarritos.form   |  53 [32m++++++[m
+ .../java/ec/edu/ups/vista/ListarMisCarritos.java   |  74 [32m++++++++[m
+ .../java/ec/edu/ups/vista/ListarUsuarioView.java   |  10 [32m+[m[31m-[m
+ src/main/java/ec/edu/ups/vista/Main.java           |  19 [32m++[m[31m-[m
+ src/main/java/ec/edu/ups/vista/Menu.java           | 123 [32m+++++++++++++[m[31m-[m
+ src/main/resources/mensajes_en_US.properties       |  61 [32m+++++++[m
+ src/main/resources/mensajes_es_EC.properties       |  64 [32m+++++++[m
+ src/main/resources/mensajes_fr_FR.properties       |  64 [32m+++++++[m
+ src/main/resources/mensajes_it_IT.properties       |  64 [32m+++++++[m
+ 14 files changed, 759 insertions(+), 241 deletions(-)
+
+[33mcommit 8a6aeb14edb30ca41154e52f4211e32a2469c229[m
+Author: MHFERNANDO <fermarhug@gmail.com>
+Date:   Sun Jul 6 21:17:53 2025 -0500
+
+    Iconos
+
+ src/main/java/ec/edu/ups/vista/Actualizar.java     |  25 [32m+++++++++++++++++[m
+ .../java/ec/edu/ups/vista/AnadirUsuarioView.java   |  16 [32m+++++++++++[m
+ .../java/ec/edu/ups/vista/CarritoAnadirView.java   |  30 [32m+++++++++++++++++++++[m
+ src/main/java/ec/edu/ups/vista/CarritoLista.java   |  17 [32m++++++++++++[m
+ .../java/ec/edu/ups/vista/ListarUsuarioView.java   |  18 [32m+++++++++++++[m
+ src/main/java/ec/edu/ups/vista/LoginView.java      |  27 [32m++++++++++++++++[m[31m---[m
+ .../ec/edu/ups/vista/OlvideContrasenaView.java     |  22 [32m+++++++++++++[m[31m--[m
+ .../java/ec/edu/ups/vista/ProductoAnadirView.java  |  16 [32m+++++++++++[m
+ .../java/ec/edu/ups/vista/ProductoDeleteView.java  |  18 [32m+++++++++++++[m
+ .../java/ec/edu/ups/vista/ProductoListaView.java   |  18 [32m+++++++++++++[m
+ .../ec/edu/ups/vista/RegistrarPreguntaView.java    |  10 [32m+++++++[m
+ .../java/ec/edu/ups/vista/RegistrarseView.java     |   9 [32m+++++++[m
+ .../ec/edu/ups/vista/UsuarioActualizarView.java    |  24 [32m+++++++++++++++++[m
+ src/main/resources/imagenes/actualizar.png         | Bin [31m0[m -> [32m391[m bytes
+ src/main/resources/imagenes/add.png                | Bin [31m0[m -> [32m264[m bytes
+ src/main/resources/imagenes/add1.png               | Bin [31m0[m -> [32m299[m bytes
+ src/main/resources/imagenes/agregar.png            | Bin [31m0[m -> [32m448[m bytes
+ src/main/resources/imagenes/buscar.png             | Bin [31m0[m -> [32m499[m bytes
+ src/main/resources/imagenes/guardar.png            | Bin [31m0[m -> [32m276[m bytes
+ src/main/resources/imagenes/lista.png              | Bin [31m0[m -> [32m278[m bytes
+ .../imagenes/user.png}                             | Bin
+ src/main/resources/imagenes/usuario.png            | Bin [31m0[m -> [32m276[m bytes
+ src/main/resources/imagenes/x.png                  | Bin [31m0[m -> [32m260[m bytes
+ 23 files changed, 245 insertions(+), 5 deletions(-)
+
+[33mcommit b4593d067133cfdd5fa96f7be775233b525473d7[m
+Author: MHFERNANDO <fermarhug@gmail.com>
+Date:   Sun Jul 6 20:23:57 2025 -0500
+
+    comienzo hacer iconos, idiomas implementados
+
+ .../java/ec/edu/ups/util/icons8-usuario-30.png     | Bin [31m0[m -> [32m317[m bytes
+ src/main/java/ec/edu/ups/vista/LoginView.form      |   6 [32m+[m[31m-[m
+ src/main/java/ec/edu/ups/vista/LoginView.java      |  95 [32m+++++++++++++++[m[31m----[m
+ src/main/java/ec/edu/ups/vista/Main.java           |   8 [32m+[m[31m-[m
+ src/main/java/ec/edu/ups/vista/MenuLogin.java      | 102 [32m+++++++++++++++++++[m[31m--[m
+ .../ec/edu/ups/vista/OlvideContrasenaView.java     |  73 [32m++++++[m[31m---------[m
+ .../java/ec/edu/ups/vista/ProductoAnadirView.java  |   2 [31m-[m
+ .../ec/edu/ups/vista/RegistrarPreguntaView.java    |  49 [32m+++++++++[m[31m-[m
+ .../java/ec/edu/ups/vista/RegistrarseView.java     |  63 [32m++++++++++[m[31m---[m
+ src/main/resources/mensajes_en_US.properties       |  45 [32m+++++++++[m
+ src/main/resources/mensajes_es_EC.properties       |  46 [32m++++++++++[m
+ src/main/resources/mensajes_fr_FR.properties       |  45 [32m+++++++++[m
+ src/main/resources/mensajes_it_IT.properties       |  46 [32m++++++++++[m
+ 13 files changed, 482 insertions(+), 98 deletions(-)

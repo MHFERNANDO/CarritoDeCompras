@@ -1,5 +1,8 @@
 package ec.edu.ups.modelo;
 
+import ec.edu.ups.util.CedulaException;
+import ec.edu.ups.util.PasswordException;
+
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -58,7 +61,10 @@ public class Usuario {
         return contrasenia;
     }
 
-    public void setContrasenia(String contrasenia) {
+    public void setContrasenia(String contrasenia) throws PasswordException {
+        if (!esPasswordValida(contrasenia)) {
+            throw new PasswordException("La contraseña no cumple con los requisitos.");
+        }
         this.contrasenia = contrasenia;
     }
 
@@ -90,7 +96,10 @@ public class Usuario {
         return cedula;
     }
 
-    public void setCedula(String cedula) {
+    public void setCedula(String cedula) throws CedulaException {
+        if (!esCedulaValida(cedula)) {
+            throw new CedulaException("La cédula ecuatoriana no es válida.");
+        }
         this.cedula = cedula;
     }
 
@@ -108,6 +117,45 @@ public class Usuario {
 
     public void setFechaNac(GregorianCalendar fechaNac) {
         this.fechaNac = fechaNac;
+    }
+
+    private boolean esPasswordValida(String password) {
+        if (password == null || password.length() < 8) return false;
+        if (!password.matches(".*[A-Z].*")) return false;
+        if (!password.matches(".*[a-z].*")) return false;
+        if (!password.matches(".*\\d.*")) return false;
+        if (!password.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?].*")) return false;
+
+        return true;
+    }
+
+
+
+    private boolean esCedulaValida(String cedula) {
+        if (cedula == null || !cedula.matches("\\d{10}")) {
+            return false;
+        }
+
+        int provincia = Integer.parseInt(cedula.substring(0, 2));
+        int tercerDigito = Integer.parseInt(cedula.substring(2, 3));
+        if (provincia < 1 || provincia > 24 || tercerDigito >= 6) {
+            return false;
+        }
+
+        int suma = 0;
+        for (int i = 0; i < 9; i++) {
+            int valor = Character.getNumericValue(cedula.charAt(i));
+            if (i % 2 == 0) {
+                valor *= 2;
+                if (valor > 9) valor -= 9;
+            }
+            suma += valor;
+        }
+
+        int digitoVerificador = Integer.parseInt(cedula.substring(9));
+        int resultado = (10 - (suma % 10)) % 10;
+
+        return resultado == digitoVerificador;
     }
 
     @Override

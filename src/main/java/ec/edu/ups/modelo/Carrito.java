@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class Carrito {
-    private static int contador=0;
+    private static int contador=1;
     private int codigo;
     private GregorianCalendar fechaCreacion;
     private List<ItemCarrito> items;
@@ -67,6 +67,26 @@ public class Carrito {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+    }
+
+    public static int getContador() {
+        return contador;
+    }
+
+    public static void setContador(int contador) {
+        Carrito.contador = contador;
+    }
+
+    public List<ItemCarrito> getItems() {
+        return items;
+    }
+
+    public void setItems(List<ItemCarrito> items) {
+        this.items = items;
+    }
+
+    public double getIVA() {
+        return IVA;
     }
 
     public void eliminarProducto(int codigoProducto) {
