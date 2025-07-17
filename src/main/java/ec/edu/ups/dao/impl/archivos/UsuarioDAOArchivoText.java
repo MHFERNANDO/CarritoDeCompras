@@ -25,6 +25,15 @@ public class UsuarioDAOArchivoText implements UsuarioDAO {
         } catch (IOException e) {
             System.err.println("Error inicializando archivo: " + e.getMessage());
         }
+
+        if (buscarPorUserEspecifico("Fer") == null) {
+            crear(new Usuario("Fer", "12345", Rol.ADMINISTRADOR, null, "Fernando", "Martinez", "0150064442", "Masculino", null));
+        }
+
+        if (buscarPorUserEspecifico("user") == null) {
+            crear(new Usuario("user", "12345", Rol.USUARIO, null, "Usuario", "Ejemplo", "1234567890", "Femenino", null));
+        }
+
     }
 
     @Override
