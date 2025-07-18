@@ -28,11 +28,11 @@ public class ProductoDAOArchivoBin implements ProductoDAO {
     @Override
     public void crear(Producto producto) {
         try (RandomAccessFile file = new RandomAccessFile(ruta, "rw")) {
-            file.seek(file.length()); // ir al final para añadir
+            file.seek(file.length());
             file.writeInt(producto.getCodigo());
             writeFixedString(file, producto.getNombre(), NOMBRE_SIZE_CHARS);
             file.writeDouble(producto.getPrecio());
-            file.writeBoolean(true); // disponible
+            file.writeBoolean(true);
         } catch (IOException e) {
             e.printStackTrace();
         }

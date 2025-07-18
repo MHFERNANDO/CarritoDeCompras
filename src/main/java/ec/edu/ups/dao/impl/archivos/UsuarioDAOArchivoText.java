@@ -160,10 +160,10 @@ public class UsuarioDAOArchivoText implements UsuarioDAO {
         sb.append(u.getApellido()).append("|");
         sb.append(u.getCedula()).append("|");
         sb.append(u.getGenero()).append("|");
-        // Guardamos fecha en millis o 0 si es null
+
         sb.append(u.getFechaNac() != null ? u.getFechaNac().getTimeInMillis() : 0);
 
-        // Guardar respuestas, formato idPregunta,respuesta;idPregunta,respuesta;...
+
         if (u.getRespuestas() != null && !u.getRespuestas().isEmpty()) {
             sb.append("|");
             for (int i = 0; i < u.getRespuestas().size(); i++) {
