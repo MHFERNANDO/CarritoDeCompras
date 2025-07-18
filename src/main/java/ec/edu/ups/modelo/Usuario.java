@@ -132,10 +132,14 @@ public class Usuario {
 
 
     private boolean esCedulaValida(String cedula) {
-        if (cedula == null || !cedula.matches("\\d{10}")) {
+        if (cedula == null || cedula.length() != 10) {
             return false;
         }
-
+        for (char c : cedula.toCharArray()) {
+            if (!Character.isDigit(c)) {
+                return false;
+            }
+        }
         int provincia = Integer.parseInt(cedula.substring(0, 2));
         int tercerDigito = Integer.parseInt(cedula.substring(2, 3));
         if (provincia < 1 || provincia > 24 || tercerDigito >= 6) {
