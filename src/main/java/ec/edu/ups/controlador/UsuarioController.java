@@ -12,6 +12,8 @@ import ec.edu.ups.modelo.Pregunta;
 import ec.edu.ups.modelo.Respuesta;
 import ec.edu.ups.modelo.Rol;
 import ec.edu.ups.modelo.Usuario;
+import ec.edu.ups.util.CedulaException;
+import ec.edu.ups.util.PasswordException;
 import ec.edu.ups.vista.*;
 
 import javax.swing.*;
@@ -122,6 +124,8 @@ public class UsuarioController {
             @Override
             public void actionPerformed(ActionEvent e) {
                 guardarRespuestas();
+                limpiarPregunta();
+
             }
         });
 
@@ -129,6 +133,7 @@ public class UsuarioController {
             @Override
             public void actionPerformed(ActionEvent e) {
                 buscarUsuarioParaRecuperarContrasena();
+                limpiarOlvide();
             }
         });
         olvideContrasenaView.getGuardarContraseñaButton().addActionListener(new ActionListener() {
@@ -185,15 +190,20 @@ public class UsuarioController {
         }
 
         if (preguntaActual.getRespuesta().equalsIgnoreCase(respuestaIngresada.trim())) {
-            usuarioRecuperar.setContrasenia(nuevaContrasena);
-            usuarioDAO.actualizar(usuarioRecuperar.getUsername(), usuarioRecuperar);
-            JOptionPane.showMessageDialog(null, mensajeHandler.get("mensaje.contrasenaActualizada") + ": " + nuevaContrasena);
-            olvideContrasenaView.setVisible(false);
-            loginView.setVisible(true);
+            try {
+                usuarioRecuperar.setContrasenia(nuevaContrasena); // Puede lanzar PasswordException
+                usuarioDAO.actualizar(usuarioRecuperar.getUsername(), usuarioRecuperar);
+                JOptionPane.showMessageDialog(null, mensajeHandler.get("mensaje.contrasenaActualizada"));
+                olvideContrasenaView.getTextField3().setText(""); // limpia campo
+                olvideContrasenaView.setVisible(false);
+                loginView.setVisible(true);
+            } catch (PasswordException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage());
+            }
         } else {
             JOptionPane.showMessageDialog(null, mensajeHandler.get("mensaje.respuestaIncorrecta"));
 
-            // Buscar otra pregunta diferente a la actual
+            // Intentar otra pregunta diferente
             List<Respuesta> respuestasValidas = new ArrayList<>();
             for (Respuesta r : usuarioRecuperar.getRespuestas()) {
                 if (!r.getRespuesta().isEmpty() && r.getId() != preguntaActual.getId()) {
@@ -209,6 +219,24 @@ public class UsuarioController {
                 olvideContrasenaView.getPreguntaAleatoriaLabel().setText(textoPregunta);
             }
         }
+    }
+
+    private void limpiarPregunta(){
+        registrarPreguntaView.getTextField1().setText("");
+        registrarPreguntaView.getTextField2().setText("");
+        registrarPreguntaView.getTextField3().setText("");
+        registrarPreguntaView.getTextField4().setText("");
+        registrarPreguntaView.getTextField5().setText("");
+        registrarPreguntaView.getTextField6().setText("");
+        registrarPreguntaView.getTextField7().setText("");
+        registrarPreguntaView.getTextField8().setText("");
+        registrarPreguntaView.getTextField9().setText("");
+        registrarPreguntaView.getTextField10().setText("");
+    }
+    private void limpiarOlvide(){
+        olvideContrasenaView.getTextField1().setText("");
+        olvideContrasenaView.getTextField2().setText("");
+        olvideContrasenaView.getPreguntaAleatoriaLabel().setText("Pregunta de seguridad");;
     }
 
     private void buscarUsuario(){
@@ -244,31 +272,41 @@ public class UsuarioController {
     }
 
 
-    private void addUsuario(){
+    private void addUsuario() {
         String rol = anadirUsuarioView.getComboBox1().getSelectedItem().toString();
         String username = anadirUsuarioView.getTextField1().getText();
         String password = anadirUsuarioView.getTextField2().getText();
         String nombre = anadirUsuarioView.getNombreTxtF().getText();
         String apellido = anadirUsuarioView.getApellidoTxtF().getText();
-        String cedula = anadirUsuarioView.getCedulaTxtF().getText();
         String genero = anadirUsuarioView.getComboBox2().getSelectedItem().toString();
-        GregorianCalendar fechaNacimiento= anadirUsuarioView.obtenerFechaNacimiento();
-        if (rol.isEmpty()||username.isEmpty()||password.isEmpty()||nombre.isEmpty()||apellido.isEmpty()||cedula.isEmpty()||genero.isEmpty()||fechaNacimiento==null){
+        GregorianCalendar fechaNacimiento = anadirUsuarioView.obtenerFechaNacimiento();
+
+        if (rol.isEmpty() || username.isEmpty() || password.isEmpty() || nombre.isEmpty() || apellido.isEmpty() || genero.isEmpty() || fechaNacimiento == null) {
             anadirUsuarioView.mostrarMensaje(mensajeHandler.get("mensaje.llenarCampos"));
-            return ;
+            return;
         }
 
-        if (rol.equalsIgnoreCase("USUARIO")){
-            Usuario usuarioNuevo = new Usuario(username,password,Rol.USUARIO,null,nombre,apellido,cedula,genero,fechaNacimiento);
+        try {
+            Usuario usuarioNuevo = new Usuario();
+            usuarioNuevo.setUsername(username);
+            usuarioNuevo.setContrasenia(password);
+            usuarioNuevo.setNombre(nombre);
+            usuarioNuevo.setApellido(apellido);
+            usuarioNuevo.setGenero(genero);
+            usuarioNuevo.setFechaNac(fechaNacimiento);
+            usuarioNuevo.setRol(rol.equalsIgnoreCase("ADMINISTRADOR") ? Rol.ADMINISTRADOR : Rol.USUARIO);
+            usuarioNuevo.setCedula(username); // usar username como cédula
+
             usuarioDAO.crear(usuarioNuevo);
-        }else if (rol.equalsIgnoreCase("ADMINISTRADOR")){
-            Usuario usuarioNuevo = new Usuario(username,password,Rol.ADMINISTRADOR,null,nombre,apellido,cedula,genero,fechaNacimiento);
-            usuarioDAO.crear(usuarioNuevo);
+
+            anadirUsuarioView.mostrarMensaje(mensajeHandler.get("mensaje.usuarioCreado"));
+            anadirUsuarioView.limpiar();
+            System.out.println(usuarioDAO.listarTodos());
+        } catch (CedulaException | PasswordException e) {
+            anadirUsuarioView.mostrarMensaje(e.getMessage());
         }
-        anadirUsuarioView.mostrarMensaje(mensajeHandler.get("mensaje.usuarioCreado"));
-        anadirUsuarioView.limpiar();
-        System.out.println(usuarioDAO.listarTodos());
     }
+
 
     private void limpiarAddUser(){
         anadirUsuarioView.getTextField1().setText("");
@@ -304,24 +342,41 @@ public class UsuarioController {
         return usuario;
     }
 
-    public void registrarUsuario(){
-        String cedula = registrarseView.getCedulaLabel().getText();
+    public void registrarUsuario() {
+        String username = registrarseView.getUserTexfld().getText();
+        String password = registrarseView.getPasswordTexfld().getText();
         String nombre = registrarseView.getNombreLabel().getText();
         String apellido = registrarseView.getApellidoLabel().getText();
         String genero = registrarseView.getComboBox1().getSelectedItem().toString();
         GregorianCalendar fechaNacimiento = registrarseView.obtenerFechaNacimiento();
-        String username = registrarseView.getUserTexfld().getText();
-        String pasword = registrarseView.getPasswordTexfld().getText();
-        if (cedula.isEmpty()||nombre.isEmpty()||apellido.isEmpty()||genero.isEmpty()||fechaNacimiento==null||username.isEmpty()||pasword.isEmpty()){
+
+        if (username.isEmpty() || password.isEmpty() || nombre.isEmpty() || apellido.isEmpty() || genero.isEmpty() || fechaNacimiento == null) {
             registrarseView.mostrarMensaje(mensajeHandler.get("mensaje.llenarCampos"));
-        } else {
-            usuario = new Usuario(username,pasword,Rol.USUARIO,null,nombre,apellido,cedula,genero,fechaNacimiento);
-            usuarioDAO.crear(usuario);
+            return;
         }
-        registrarseView.setVisible(false);
-        mostrarPreguntasEnVista();
-        registrarPreguntaView.setVisible(true);
+
+        try {
+            Usuario nuevoUsuario = new Usuario();
+            nuevoUsuario.setUsername(username);
+            nuevoUsuario.setContrasenia(password);
+            nuevoUsuario.setNombre(nombre);
+            nuevoUsuario.setApellido(apellido);
+            nuevoUsuario.setGenero(genero);
+            nuevoUsuario.setFechaNac(fechaNacimiento);
+            nuevoUsuario.setRol(Rol.USUARIO);
+            nuevoUsuario.setCedula(username); // usar username como cédula
+
+            usuarioDAO.crear(nuevoUsuario);
+            this.usuario = nuevoUsuario;
+
+            registrarseView.setVisible(false);
+            mostrarPreguntasEnVista();
+            registrarPreguntaView.setVisible(true);
+        } catch (CedulaException | PasswordException ex) {
+            registrarseView.mostrarMensaje(ex.getMessage());
+        }
     }
+
 
     private void guardarRespuestas() {
         if (usuario == null) {
@@ -387,12 +442,14 @@ public class UsuarioController {
         List<Usuario> usuarios = usuarioDAO.listarTodos();
         listarUsuarioView.cargarDatos(usuarios);
     }
-    private void actualizarUser(){
+    private void actualizarUser() {
         String username = usuarioActualizarView.getTextField1().getText();
-        if(username.isEmpty()){
+
+        if (username.isEmpty()) {
             usuarioActualizarView.mostrarMensaje(mensajeHandler.get("mensaje.llenarCampoBuscar"));
-            return ;
+            return;
         }
+
         Usuario usuarioEn = usuarioDAO.buscarPorUserEspecifico(username);
         if (usuarioEn != null) {
             usuarioActualizarView.getTextField2().setText(usuarioEn.getUsername());
@@ -402,23 +459,34 @@ public class UsuarioController {
         String nUsername = usuarioActualizarView.getTextField4().getText();
         String nPassword = usuarioActualizarView.getTextField5().getText();
 
-        if (nUsername.isEmpty() || nPassword.isEmpty()){
+        if (nUsername.isEmpty() || nPassword.isEmpty()) {
             usuarioActualizarView.mostrarMensaje(mensajeHandler.get("mensaje.llenarCampos"));
-            return ;
+            return;
         }
 
         int conf = JOptionPane.showConfirmDialog(null, mensajeHandler.get("mensaje.confirmarActualizacion"), mensajeHandler.get("usuarioAct.titulo"), JOptionPane.YES_NO_OPTION);
 
-        if (conf == JOptionPane.YES_OPTION){
-            Usuario usuarioAc = new Usuario(nUsername, nPassword,usuarioEn.getRol(), usuarioEn.getRespuestas());
-            usuarioDAO.actualizar(usuarioEn.getUsername(),usuarioAc);
-            usuarioActualizarView.mostrarMensaje(mensajeHandler.get("mensaje.usuarioActualizado"));
-            usuarioActualizarView.limpiar();
+        if (conf == JOptionPane.YES_OPTION) {
+            try {
+                Usuario usuarioAc = new Usuario();
+                usuarioAc.setUsername(nUsername);
+                usuarioAc.setContrasenia(nPassword);
+                usuarioAc.setRol(usuarioEn.getRol());
+                usuarioAc.setRespuestas(usuarioEn.getRespuestas());
+                usuarioAc.setCedula(nUsername); // usar username como cédula
+
+                usuarioDAO.actualizar(usuarioEn.getUsername(), usuarioAc);
+                usuarioActualizarView.mostrarMensaje(mensajeHandler.get("mensaje.usuarioActualizado"));
+                usuarioActualizarView.limpiar();
+            } catch (CedulaException | PasswordException e) {
+                usuarioActualizarView.mostrarMensaje(e.getMessage());
+            }
         } else {
             usuarioActualizarView.mostrarMensaje(mensajeHandler.get("mensaje.actualizacionCancelada"));
             usuarioActualizarView.limpiar();
         }
     }
+
 
     public void logout() {
         this.usuario = null;

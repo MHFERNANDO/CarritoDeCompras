@@ -1,6 +1,7 @@
 package ec.edu.ups.vista;
 
 import ec.edu.ups.modelo.Usuario;
+import ec.edu.ups.util.CedulaException;
 import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 
 import javax.swing.*;
@@ -94,6 +95,7 @@ public class ListarUsuarioView extends JInternalFrame {
         }
 
         modelo.setNumRows(0);
+
 
         for (Usuario usuario : usuarios) {
             Object[] fila = {
